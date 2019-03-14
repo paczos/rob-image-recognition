@@ -8,16 +8,17 @@ function pdf = pdf_parzen(pts, para)
 %	liczba wierszy = liczba pr�bek w pts
 %	liczba kolumn = liczba klas
 
-	for c=1:rows(para.labels) % po klasach
-    samples = para.samples{c};
-    n = rows(samples);
-    h = para.parzenw/sqrt(n);
-      for pt=1:rows(pts) % po punktach
-        pdfs = zeros(n, columns(samples));
-          for feature=1:columns(samples) % po cechach
+    for c=1:rows(para.labels) % po klasach
+        samples = para.samples{c};
+        n = rows(samples);
+        h = para.parzenw/sqrt(n);
+        for pt=1:rows(pts) % po punktach
+            pdfs = zeros(n, columns(samples));
+            for feature=1:columns(samples) % po cechach
               pdfs(:, feature) = normpdf(pts(pt, feature), samples(:, feature), h);
-          end
-           pdf(pt, c) = mean(prod(pdfs, 2));
+            end
+
+            pdf(pt, c) = mean(prod(pdfs, 2));
       end
 	end
 end
