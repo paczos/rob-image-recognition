@@ -13,8 +13,8 @@ function para = para_multi(ts)
 
 	% tu trzeba wype�ni� warto�ci �rednie i macierze kowariancji dla klas
 	for c=1:rows(labels)
-		data = ts(ts(:, 1) == labels(c), 2:end)
-		para.mu(c,:)  = mean(data)
+		data = ts(ts(:, 1) == labels(c), 2:end);
+		para.mu(c,:)  = mean(data);
 		para.sig(:, :, c) = cov(data);
 
 	end
