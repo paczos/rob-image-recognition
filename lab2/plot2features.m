@@ -19,13 +19,16 @@ function plot2features(tset, f1, f2)
 	labels = unique(tset(:,1));
 	
 	% utworzenie okna wykresu i zablokowanie usuwania zawarto�ci
-	hf = figure;
-    name = strcat("plots/","plot", int2str(f1), "vs", int2str(f2),".png");
+	name = strcat("plots/","plot", int2str(f1), "vs", int2str(f2),".png");
 
+    hf = figure('Name', name);
+  	hold on;
+    
 	for i=1:size(labels,1)
 		idx = tset(:,1) == labels(i);
 		plot(res(idx,1), res(idx,2), pattern(i,:));
 	end
-	print (hf, name);
+	hold off;
+    print (hf, name);
 
 end
