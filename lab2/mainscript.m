@@ -188,7 +188,7 @@ pdfparzen_para = para_parzen(train, 0.001);
 % w sprawozdaniu trzeba podawa� szeroko�� okna (nie liczymy tego parametru z danych!)
 
 % wyniki do punktu 3
-sprintf("punkt 3: ")
+sprintf("pkt 3: ")
 fprintf("\n|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
 fprintf("--------\n")
 base_ercf = zeros(1,3);
@@ -204,8 +204,8 @@ fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, base_ercf(1), base_ercf(2)
 % W sprawozdaniu prosz� poda� tylko warto�� �redni� i odchylenie standardowe wsp�czynnika b��du
 % 4:
 parts = [0.1 0.25 0.5];
-rep_cnt = 5; % przynajmniej
-
+rep_cnt = 1; % przynajmniej 5
+sprintf("pkt 4:")
 labels = unique(train(:,1));
 fprintf("\n|czesc|powtorzenie|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
 fprintf("----------\n")
@@ -244,10 +244,25 @@ semilogx(parzen_widths, parzen_res)
 % W punkcie 6 redukcja dotyczy ZBIORU TESTOWEGO (nie ma potrzeby zmiany zbioru ucz�cego)
 % 
 apriori = [0.165 0.085 0.085 0.165 0.165 0.085 0.085 0.165];
-parts = [1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0];
+parts = [1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0]; % todo bierzemy klasy z takimi częściami, raz wykonujemy
+sprintf("pkt 6:")
+labels = unique(train(:,1));
+fprintf("\n|czesc|powtorzenie|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
+fprintf("----------\n")
+    for p=1:columns(parts)
+        for rep=1:rep_cnt
+        pdfindep_para = para_indep(tr);
+        pdfmulti_para = para_multi(tr);
+        pdfparzen_para = para_parzen(tr, 0.001);
+        base_ercf = zeros(1,3);
 
-% YOUR CODE GOES HERE
-%
+        testred = reduce(test, repmat([parts(p)], rows(labels), 1)');
+        base_ercf(1) = mean(bayescls(testred(:,2:end), @pdf_indep, pdfindep_para, apriori) != testred(:,1));
+        base_ercf(2) = mean(bayescls(testred(:,2:end), @pdf_multi, pdfmulti_para, apriori) != testred(:,1));
+        base_ercf(3) = mean(bayescls(testred(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != testred(:,1));
+        fprintf("|%f|%d|%d  %d|%f|%f|%f|\n", parts(p), rep, first_idx, second_idx, base_ercf(1), base_ercf(2), base_ercf(3)) % odpowiednio  sformatowany wiersz tabeli dla markdowna
+    end
+end
 
 
 % W ostatnim punkcie trzeba zastanowi� si� nad normalizacj�
