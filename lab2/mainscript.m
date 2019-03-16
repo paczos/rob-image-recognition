@@ -134,10 +134,26 @@ unique(test(:,1))
 
 [mean(train); median(train)]
 hist(train(:,1))
-plot2features(train, 4, 6)
+Combs = nchoosek(labels(2:end), 2)
+for i=1:size(Combs)
+     f1 = Combs(i, 1);
+     f2 = Combs(i, 2);
+     plot2features(train, f1, f2);
+end
+
 
 % do identyfikacji odstaj�cych pr�bek doskonale nadaj� si� wersje
 % funkcji min i max z dwoma argumentami wyj�ciowymi
+
+for i=2:size(train,2)
+    [mv midx] = min(train(:, i));
+    sprintf("min %d for class %d is at %d", mv,  i, midx);
+end
+
+for i=2:size(train,2)
+    [mv midx ] = min(train(:, i))
+    sprintf("min %d for class %d is at %d", mv,  i, midx)
+end
 
 [mv midx] = min(train)
 
@@ -145,15 +161,12 @@ plot2features(train, 4, 6)
 % dobrze zweryfikowa� ich odstawanie spogl�daj�c przynajmniej na s�siad�w
 % podejrzanej pr�bki w zbiorze ucz�cym
 
-% powiedzmy, �e podejrzana jest pr�bka 58
-midx = 58
-train(midx-1:midx+1, :)
-% tu akurat wysz�y r�ne klasy, wi�c por�wnanie jest trudne...
-
 % je�li nabra�em przekonania, �e pr�bka midx jest do usuni�cia, to:
 size(train)
-train(midx, :) = [];
+train([186, 642], :) = [];
 size(train)
+
+
 
 % procedur� szukania i usuwania warto�ci odstaj�cych trzeba powtarza� do skutku
 
