@@ -14,7 +14,7 @@ function rds = reduce(ds, parts)
 		error("Niewlasciwe wspolczynniki redukcji.");
 	end
 		rds = [];
-	for c=2:rows(labels)
+	for i=1:rows(labels)
         datainclass = ds(ds(:, 1)==labels(c), :);
         reducedidx = randperm(floor(rows(datainclass)*parts(c)));
         rds = [rds; datainclass(reducedidx, :)];
