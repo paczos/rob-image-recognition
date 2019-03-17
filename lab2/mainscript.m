@@ -171,8 +171,8 @@ end
 % daj� w miar� dobrze odseparowane od siebie klasy
 
 % Po ustaleniu cech (dok�adniej: indeks�w kolumn, w kt�rych cechy siedz�):
-first_idx = 4;
-second_idx = 6;
+first_idx = 3;
+second_idx = 4;
 train = train(:, [1 first_idx second_idx]);
 test = test(:, [1 first_idx second_idx]);
 
@@ -190,7 +190,7 @@ pdfparzen_para = para_parzen(train, 0.001);
 % wyniki do punktu 3
 sprintf("pkt 3 (baseline)")
 fprintf("\n|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
-fprintf("--------\n")
+fprintf("|--------|\n")
 base_ercf = zeros(1,3);
 apriori = repmat([0.25], rows(test(:,2:end)), 1);
 base_ercf(1) = mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para, apriori) != test(:,1));
@@ -204,11 +204,11 @@ fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, base_ercf(1), base_ercf(2)
 % W sprawozdaniu prosz� poda� tylko warto�� �redni� i odchylenie standardowe wsp�czynnika b��du
 % 4:
 parts = [0.1 0.25 0.5];
-rep_cnt = 1; % przynajmniej 5
+rep_cnt = 5; % przynajmniej 5
 sprintf("pkt 4 reduce training set")
 labels = unique(train(:,1));
 fprintf("\n|czesc|powtorzenie|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
-fprintf("----------\n")
+fprintf("|----------|\n")
     for p=1:columns(parts)
         for rep=1:rep_cnt
         tr = reduce(train, repmat([parts(p)], rows(labels), 1)');
@@ -230,7 +230,7 @@ parzen_res = zeros(1, columns(parzen_widths));
 apriori = repmat([0.25], rows(test(:,2:end)), 1);
 sprintf("pkt 5 different parzen windows")
 fprintf("\n|parzen width|error|\n")
-fprintf("-------------\n")
+fprintf("|-------------|\n")
 for w=1:columns(parzen_widths)
         pdfparzen_para = para_parzen(tr, parzen_widths(w));
         base_ercf = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test(:,1));
