@@ -1,7 +1,9 @@
-function plot2features(tset, f1, f2)
+function plot2features(tset, f1, f2, savefile)
 	% rysuje punkty zbioru tset na dwuwymiarowym wykresie
 	%  u�ywaj�c cech o indeksach f1 i f2
 	% pierwsza kolumna tset zawiera etykiet�
+
+ if ~exist('savefile','var'), savefile=0; end
 
 	% parametry rysowania poszczeg�lnych klas (ograniczone do 8)
 	pattern(1,:) = "ks";
@@ -29,6 +31,8 @@ function plot2features(tset, f1, f2)
 		plot(res(idx,1), res(idx,2), pattern(i,:));
 	end
 	hold off;
-    print (hf, name);
+	if savefile ==1
+        print (hf, name);
+    end
 
 end
