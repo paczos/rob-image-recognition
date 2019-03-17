@@ -137,13 +137,13 @@ unique(test(:,1));
 % funkcji min i max z dwoma argumentami wyj�ciowymi
 
 for i=2:size(train,2)
-%    [mv midx] = min(train(:, i));
-%    fprintf("min %d for class %d is at %d", mv,  i, midx);
+     [mv midx] = min(train(:, i));
+     sprintf("min %d for class %d is at %d", mv,  i, midx);
 end
 
 for i=2:size(train,2)
-%    [mv midx ] = min(train(:, i));
-%    fprintf("min %d for class %d is at %d", mv,  i, midx);
+     [mv midx] = min(train(:, i));
+     sprintf("min %d for class %d is at %d", mv,  i, midx);
 end
 
 %[mv midx] = min(train)
@@ -161,7 +161,7 @@ Combs = nchoosek(labels(2:end), 2);
 for i=1:size(Combs)
      f1 = Combs(i, 1);
      f2 = Combs(i, 2);
-     %plot2features(train, f1, f2);
+     plot2features(train, f1, f2, 0);
 end
 
 % procedur� szukania i usuwania warto�ci odstaj�cych trzeba powtarza� do skutku
@@ -188,7 +188,7 @@ pdfparzen_para = para_parzen(train, 0.001);
 % w sprawozdaniu trzeba podawa� szeroko�� okna (nie liczymy tego parametru z danych!)
 
 % wyniki do punktu 3
-sprintf("pkt 3: ")
+sprintf("pkt 3 (baseline)")
 fprintf("\n|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
 fprintf("--------\n")
 base_ercf = zeros(1,3);
@@ -205,7 +205,7 @@ fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, base_ercf(1), base_ercf(2)
 % 4:
 parts = [0.1 0.25 0.5];
 rep_cnt = 1; % przynajmniej 5
-sprintf("pkt 4:")
+sprintf("pkt 4 reduce training set")
 labels = unique(train(:,1));
 fprintf("\n|czesc|powtorzenie|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
 fprintf("----------\n")
@@ -228,13 +228,14 @@ end
 parzen_widths = [0.0001, 0.0005, 0.001, 0.005, 0.01];
 parzen_res = zeros(1, columns(parzen_widths));
 apriori = repmat([0.25], rows(test(:,2:end)), 1);
-
+sprintf("pkt 5 different parzen windows")
 fprintf("\n|parzen width|error|\n")
 fprintf("-------------\n")
 for w=1:columns(parzen_widths)
         pdfparzen_para = para_parzen(tr, parzen_widths(w));
         base_ercf = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test(:,1));
         fprintf("|%f|%f|\n", parzen_widths(w), base_ercf)
+        parzen_res(1, w) = base_ercf;
 end
 
 [parzen_widths; parzen_res]
@@ -244,24 +245,22 @@ semilogx(parzen_widths, parzen_res)
 % W punkcie 6 redukcja dotyczy ZBIORU TESTOWEGO (nie ma potrzeby zmiany zbioru ucz�cego)
 % 
 apriori = [0.165 0.085 0.085 0.165 0.165 0.085 0.085 0.165];
-parts = [1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0]; % todo bierzemy klasy z takimi częściami, raz wykonujemy
-sprintf("pkt 6:")
+parts = [1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0];
+sprintf("pkt 6 reduce testing set:")
 labels = unique(train(:,1));
 fprintf("\n|czesc|powtorzenie|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
 fprintf("----------\n")
-    for p=1:columns(parts)
-        for rep=1:rep_cnt
-        pdfindep_para = para_indep(tr);
-        pdfmulti_para = para_multi(tr);
-        pdfparzen_para = para_parzen(tr, 0.001);
-        base_ercf = zeros(1,3);
+for rep=1:rep_cnt
+    pdfindep_para = para_indep(tr);
+    pdfmulti_para = para_multi(tr);
+    pdfparzen_para = para_parzen(tr, 0.001);
+    base_ercf = zeros(1,3);
 
-        testred = reduce(test, repmat([parts(p)], rows(labels), 1)');
-        base_ercf(1) = mean(bayescls(testred(:,2:end), @pdf_indep, pdfindep_para, apriori) != testred(:,1));
-        base_ercf(2) = mean(bayescls(testred(:,2:end), @pdf_multi, pdfmulti_para, apriori) != testred(:,1));
-        base_ercf(3) = mean(bayescls(testred(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != testred(:,1));
-        fprintf("|%f|%d|%d  %d|%f|%f|%f|\n", parts(p), rep, first_idx, second_idx, base_ercf(1), base_ercf(2), base_ercf(3)) % odpowiednio  sformatowany wiersz tabeli dla markdowna
-    end
+    testred = reduce(test, parts);
+    base_ercf(1) = mean(bayescls(testred(:,2:end), @pdf_indep, pdfindep_para, apriori) != testred(:,1));
+    base_ercf(2) = mean(bayescls(testred(:,2:end), @pdf_multi, pdfmulti_para, apriori) != testred(:,1));
+    base_ercf(3) = mean(bayescls(testred(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != testred(:,1));
+    fprintf("|%f|%d|%d  %d|%f|%f|%f|\n", parts(p), rep, first_idx, second_idx, base_ercf(1), base_ercf(2), base_ercf(3)) % odpowiednio  sformatowany wiersz tabeli dla markdowna
 end
 
 
