@@ -22,7 +22,6 @@ function pdf = pdf_indep(pts, para)
 	   end
 	   pdf(:, c) = prod(pdfs, 2);
 	end
-% normpdf liczy jednowymiarową fun prawdopodobienstwa
 
 
 end

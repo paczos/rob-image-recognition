@@ -18,6 +18,5 @@ function para = para_multi(ts)
 		para.sig(:, :, c) = cov(data);
 
 	end
-	% macierz kowariancji liczy funkcja cov
 
 end

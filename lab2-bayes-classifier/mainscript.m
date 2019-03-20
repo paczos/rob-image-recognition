@@ -209,6 +209,7 @@ sprintf("pkt 4 reduce training set")
 labels = unique(train(:,1));
 fprintf("\n|czesc|powtorzenie|cechy|pdfindep_para|pdfmulti_para|pdfparzen_para|\n")
 fprintf("|----------|\n")
+
     for p=1:columns(parts)
         for rep=1:rep_cnt
         tr = reduce(train, repmat([parts(p)], rows(labels), 1)');
@@ -263,7 +264,7 @@ for rep=1:rep_cnt
     fprintf("|%f|%d|%d  %d|%f|%f|%f|\n", parts(p), rep, first_idx, second_idx, base_ercf(1), base_ercf(2), base_ercf(3)) % odpowiednio  sformatowany wiersz tabeli dla markdowna
 end
 
-
+sprintf("pkt 7")
 % W ostatnim punkcie trzeba zastanowi� si� nad normalizacj�
 std(train(:,2:end))
 % Mo�e warto sprawdzi�, jak to wygl�da w poszczeg�lnych klasach?

@@ -13,7 +13,8 @@ function rds = reduce(ds, parts)
 	if max(parts) > 1 || min(parts) < 0
 		error("Niewlasciwe wspolczynniki redukcji.");
 	end
-		rds = [];
+
+	rds = [];
 	for c=1:rows(labels)
         datainclass = ds(ds(:, 1)==labels(c), :);
         reducedidx = randperm(floor(rows(datainclass)*parts(c)));
