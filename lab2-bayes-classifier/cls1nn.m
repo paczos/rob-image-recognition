@@ -11,14 +11,4 @@ function label = cls1nn(ts, x)
 
 end
 
-function eff = evaluate(ts)
-    disp("evaluating quality of the classifier");
-    for i = 1:rows(ts)
-        curr = ts(i, :)
-        x = curr(2, 2:end)
-        rest = ts([1:i-1 i+1:end], :)
-    end
-end
-
-
 
