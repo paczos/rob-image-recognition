@@ -1,4 +1,4 @@
-function errcf = jackknife(ts)
+function errcf = eval1nn(ts)
 % performs leave one test of cls1nn classifier on ts
 % ts - trainingset; first column contains class label
 % errcf = error coefficient
