@@ -17,7 +17,7 @@ function rds = reduce(ds, parts)
 	rds = [];
 	for c=1:rows(labels)
         datainclass = ds(ds(:, 1)==labels(c), :);
-        reducedidx = randperm(floor(rows(datainclass)*parts(c)));
+        reducedidx = randperm(rows(datainclass),floor(rows(datainclass)*parts(c)));
         rds = [rds; datainclass(reducedidx, :)];
 	end
 
