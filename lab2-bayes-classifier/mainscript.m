@@ -338,7 +338,7 @@ norm_ercf
 
 % YOUR CODE GOES HERE 
 % czy wyniki leave1out i bayes różnią się od  siebie?
-ercf_1nn = eval1nn(train)
+ercf_1nn = eval1nnl1o(train)
 
 % TODO: SPRAWDZIC CZY WSZĘDZIE PARAMSY SĄ TRENOWANE NA ODPOWIEDNICH TRSETACG
 % TODO: pokonwertować wszedzie dla sprawdzenia na etykiety klienta
