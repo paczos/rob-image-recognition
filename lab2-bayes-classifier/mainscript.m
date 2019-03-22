@@ -171,8 +171,8 @@ end
 % daj� w miar� dobrze odseparowane od siebie klasy
 
 % Po ustaleniu cech (dok�adniej: indeks�w kolumn, w kt�rych cechy siedz�):
-first_idx = 4;
-second_idx = 6;
+first_idx = 3;
+second_idx = 4;
 train = train(:, [1 first_idx second_idx]);
 test = test(:, [1 first_idx second_idx]);
 

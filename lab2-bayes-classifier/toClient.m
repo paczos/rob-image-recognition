@@ -1,9 +1,5 @@
 function label = toClient(class)
-
-if class-4 > 0
-    label = class-4;
-else
+    bigger = class-4 > 0;
     label = class;
-end
-
+    label(bigger) = label(bigger)-4;
 end
