@@ -1,5 +1,5 @@
 function label = toClient(class)
-    bigger = class-4 > 0;
+    tobestandardized = class-4 > 0;
     label = class;
-    label(bigger) = label(bigger)-4;
+    label(tobestandardized) = label(tobestandardized)-4;
 end
