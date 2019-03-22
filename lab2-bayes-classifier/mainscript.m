@@ -255,11 +255,12 @@ for p=1:columns(parts)
         ercf_client(rep, 2) = mean(toClient(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(test(:,1)));
         ercf_client(rep, 3) = mean(toClient(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test(:,1)));
     end
-    fprintf("|%f|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n", parts(p), first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)),min(ercf_client(:, 2)), max(ercf_client(:, 2)) , mean(ercf_client(:,3)), std(ercf_client(:, 3)),min(ercf_client(:,3 )),max(ercf(:, 3)))
+    fprintf("|%f|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n", parts(p), first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)),min(ercf_client(:, 2)), max(ercf_client(:, 2)) , mean(ercf_client(:,3)), std(ercf_client(:, 3)),min(ercf_client(:,3 )), max(ercf(:, 3)))
 end
 
 
 % Punkt 5 dotyczy jedynie klasyfikatora z oknem Parzena (na pe�nym zbiorze ucz�cym)
+
 parzen_widths = [0.0001, 0.0005, 0.001, 0.005, 0.01];
 parzen_res = zeros(1, columns(parzen_widths));
 apriori = repmat([0.25], rows(test(:,2:end)), 1);
@@ -272,6 +273,18 @@ for w=1:columns(parzen_widths)
         fprintf("|%f|%f|\n", parzen_widths(w), base_ercf)
         parzen_res(1, w) = base_ercf;
 end
+
+parzen_res_client = zeros(1, columns(parzen_widths));
+sprintf("pkt 5 etykiety klienta")
+fprintf("\n|parzen width|error|\n")
+fprintf("|-------------|\n")
+for w=1:columns(parzen_widths)
+        pdfparzen_para = para_parzen(tr, parzen_widths(w));
+        base_ercf = mean(toClient(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test(:,1)));
+        fprintf("|%f|%f|\n", parzen_widths(w), base_ercf)
+        parzen_res(1, w) = base_ercf;
+end
+
 
 [parzen_widths; parzen_res]
 % Tu a� prosi si� do�o�y� do danych numerycznych wykres
@@ -287,6 +300,7 @@ fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|ma
 fprintf("----------\n")
 
 ercf = zeros(rep_cnt, 3);
+ercf_client = zeros(rep_cnt, 3);
 for rep=1:rep_cnt
     pdfindep_para = para_indep(tr);
     pdfmulti_para = para_multi(tr);
@@ -297,11 +311,23 @@ for rep=1:rep_cnt
     ercf(1) = mean(bayescls(testred(:,2:end), @pdf_indep, pdfindep_para, apriori) != testred(:,1));
     ercf(2) = mean(bayescls(testred(:,2:end), @pdf_multi, pdfmulti_para, apriori) != testred(:,1));
     ercf(3) = mean(bayescls(testred(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != testred(:,1));
+
+    ercf_client(1) = mean(toClient(bayescls(testred(:,2:end), @pdf_indep, pdfindep_para, apriori)) != toClient(testred(:,1)));
+    ercf_client(2) = mean(toClient(bayescls(testred(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(testred(:,1)));
+    ercf_client(3) = mean(toClient(bayescls(testred(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(testred(:,1)));
 end
 fprintf("|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n",first_idx, second_idx, mean(ercf(:,1)), std(ercf(:, 1)),min(ercf(:,1)),max(ercf(:,1)) , mean(ercf(:,2)), std(ercf(:, 2)), min(ercf(:, 2)), max(ercf(:, 2)), mean(ercf(:,3)), std(ercf(:, 3)), min(ercf(:,3 )), max(ercf(:, 3)))
 
+ercf
 
-sprintf("pkt 7")
+sprintf("pkt 6 etykiety klienta")
+ercf_client
+fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
+fprintf("----------\n")
+fprintf("|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n",first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)), min(ercf_client(:, 2)), max(ercf_client(:, 2)), mean(ercf_client(:,3)), std(ercf_client(:, 3)), min(ercf_client(:,3 )), max(ercf_client(:, 3)))
+
+
+sprintf("pkt 7 czy normalizacja potrzebna?")
 % W ostatnim punkcie trzeba zastanowi� si� nad normalizacj�
 std(train(:,2:end))
 % Mo�e warto sprawdzi�, jak to wygl�da w poszczeg�lnych klasach?
@@ -313,6 +339,7 @@ for i=1:rows(labels)
     stds(i,:) = std(classdata);
     fprintf("|%d|%f|%f|\n", labels(i), stds(i,1), stds(i,2))
 end
+
 % Normalizacja potrzebna?
 % Je�li TAK, to jej parametry s� liczone na zbiorze ucz�cym
 % Procedura normalizacji jest aplikowana do zbioru ucz�cego i testowego
@@ -321,26 +348,41 @@ sprintf("normalizacja")
 fprintf("\n|cechy|pdfindep|pdfmulti|pdfparzen|\n")
 fprintf("|--------|\n")
 norm_ercf = zeros(1,3);
-test_norm = [test(:, 1), normalize(test(:, 2:end))]
-train_norm = [train(:, 1), normalize(train(:, 2:end))]
+test_norm = [test(:, 1), normalize(test(:, 2:end))];
+train_norm = [train(:, 1), normalize(train(:, 2:end))];
 
 pdfindep_para = para_indep(train_norm);
 pdfmulti_para = para_multi(train_norm);
 pdfparzen_para = para_parzen(train_norm, 0.001);
 
-apriori = repmat([0.25], rows(test(:,2:end)), 1);
-norm_ercf(1) = mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para, apriori) != test_norm(:,1));
-norm_ercf(2) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori) != test_norm(:,1));
-norm_ercf(3) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test_norm(:,1));
+apriori = repmat([0.25], rows(test_norm(:,2:end)), 1);
+norm_ercf(1) = mean(bayescls(test_norm(:,2:end), @pdf_indep, pdfindep_para, apriori) != test_norm(:,1));
+norm_ercf(2) = mean(bayescls(test_norm(:,2:end), @pdf_multi, pdfmulti_para, apriori) != test_norm(:,1));
+norm_ercf(3) = mean(bayescls(test_norm(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test_norm(:,1));
 fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, norm_ercf(1), norm_ercf(2), norm_ercf(3))
 norm_ercf
 
+sprintf("normalizacja, cechy klienta")
+fprintf("\n|cechy|pdfindep|pdfmulti|pdfparzen|\n")
+norm_ercf_client = zeros(1,3);
+norm_ercf_client(1) = mean(toClient(bayescls(test(:,2:end), @pdf_indep, pdfindep_para, apriori)) != toClient(test_norm(:,1)));
+norm_ercf_client(2) = mean(toClient(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(test_norm(:,1)));
+norm_ercf_client(3) = mean(toClient(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test_norm(:,1)));
+fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, norm_ercf_client(1), norm_ercf_client(2), norm_ercf_client(3))
+
 
 % YOUR CODE GOES HERE 
-% czy wyniki leave1out i bayes różnią się od  siebie?
 ercf_1nn = eval1nn(train, test);
+res1nn = zeros(rows(test), 1);
+
+for i=1:rows(test)
+        res1nn(i) = cls1nn(train, test(i, 2:end));
+end
+
 sprintf("błąd dla 1nn")
 ercf_1nn
+ercf_1nn  = mean(res1nn ~= test(:, 1));
 
-% TODO: SPRAWDZIC CZY WSZĘDZIE PARAMSY SĄ TRENOWANE NA ODPOWIEDNICH TRSETACG
-% TODO: pokonwertować wszedzie dla sprawdzenia na etykiety klienta
+sprintf("etykiety klienta")
+ercf_1nn_client  = mean(toCient(res1nn) ~= toClient(test(:, 1)));
+ercf_1nn_client
