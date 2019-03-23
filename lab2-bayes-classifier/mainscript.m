@@ -294,10 +294,10 @@ semilogx(parzen_widths, parzen_res)
 % 
 apriori = [0.165 0.085 0.085 0.165 0.165 0.085 0.085 0.165];
 parts = [1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0];
-sprintf("pkt 6 reduce testing set:")
+sprintf("pkt 6 dwukrotnie większe prawdopodobieństwo apriori dla maści czarnych")
 labels = unique(train(:,1));
 fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
-fprintf("----------\n")
+fprintf("|----------|\n")
 
 ercf = zeros(rep_cnt, 3);
 ercf_client = zeros(rep_cnt, 3);
@@ -323,7 +323,7 @@ ercf
 sprintf("pkt 6 etykiety klienta")
 ercf_client
 fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
-fprintf("----------\n")
+fprintf("|----------|\n")
 fprintf("|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n",first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)), min(ercf_client(:, 2)), max(ercf_client(:, 2)), mean(ercf_client(:,3)), std(ercf_client(:, 3)), min(ercf_client(:,3 )), max(ercf_client(:, 3)))
 
 
@@ -365,9 +365,9 @@ norm_ercf
 sprintf("normalizacja, cechy klienta")
 fprintf("\n|cechy|pdfindep|pdfmulti|pdfparzen|\n")
 norm_ercf_client = zeros(3,1);
-norm_ercf_client(1) = mean(toClient(bayescls(test(:,2:end), @pdf_indep, pdfindep_para, apriori)) != toClient(test_norm(:,1)));
-norm_ercf_client(2) = mean(toClient(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(test_norm(:,1)));
-norm_ercf_client(3) = mean(toClient(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test_norm(:,1)));
+norm_ercf_client(1) = mean(toClient(bayescls(test_norm(:,2:end), @pdf_indep, pdfindep_para, apriori)) != toClient(test_norm(:,1)));
+norm_ercf_client(2) = mean(toClient(bayescls(test_norm(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(test_norm(:,1)));
+norm_ercf_client(3) = mean(toClient(bayescls(test_norm(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test_norm(:,1)));
 fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, norm_ercf_client(1), norm_ercf_client(2), norm_ercf_client(3))
 
 
