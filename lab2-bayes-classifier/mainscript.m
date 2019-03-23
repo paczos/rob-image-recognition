@@ -196,7 +196,7 @@ apriori = repmat([0.25], rows(test(:,2:end)), 1);
 base_ercf(1) = mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para, apriori) != test(:,1));
 base_ercf(2) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori) != test(:,1));
 base_ercf(3) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test(:,1));
-fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, base_ercf(1), base_ercf(2), base_ercf(3))
+fprintf("|%d  %d|%.4f|%.4f|%.4f|\n", first_idx, second_idx, base_ercf(1), base_ercf(2), base_ercf(3))
 base_ercf
 
 sprintf("pkt 3 etykiety klienta")
@@ -206,7 +206,7 @@ apriori = repmat([0.25], rows(test(:,2:end)), 1);
 base_ercf_client(1) = mean(toClient(bayescls(test(:,2:end), @pdf_indep, pdfindep_para, apriori)) != toClient(test(:,1)));
 base_ercf_client(2) = mean(toClient(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(test(:,1)));
 base_ercf_client(3) = mean(toClient(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test(:,1)));
-fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, base_ercf_client(1), base_ercf_client(2), base_ercf_client(3))
+fprintf("|%d  %d|%.4f|%.4f|%.4f|\n", first_idx, second_idx, base_ercf_client(1), base_ercf_client(2), base_ercf_client(3))
 base_ercf_client
 
 % W kolejnym punkcie przyda si� funkcja reduce, kt�ra redukuje liczb� pr�bek w poszczeg�lnych
@@ -219,7 +219,7 @@ rep_cnt = 5; % przynajmniej 5
 sprintf("pkt 4 wpływ redukcji zbioru uczącego na wyniki klasyfikacji")
 labels = unique(train(:,1));
 fprintf("\n|czesc|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
-fprintf("|----------|\n")
+fprintf("|---|---|---|----|---|---|---|---|---|---|---|---|---|\n")
 
 for p=1:columns(parts)
     ercf = zeros(rep_cnt, 3);
@@ -234,13 +234,13 @@ for p=1:columns(parts)
         ercf(rep, 2) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori) != test(:,1));
         ercf(rep, 3) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test(:,1));
     end
-    fprintf("|%f|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n", parts(p), first_idx, second_idx, mean(ercf(:,1)), std(ercf(:, 1)),min(ercf(:,1)),max(ercf(:,1)) , mean(ercf(:,2)), std(ercf(:, 2)),min(ercf(:, 2)), max(ercf(:, 2)) , mean(ercf(:,3)), std(ercf(:, 3)),min(ercf(:,3 )),max(ercf(:, 3)))
+    fprintf("|%.4f|%d  %d|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|\n", parts(p), first_idx, second_idx, mean(ercf(:,1)), std(ercf(:, 1)),min(ercf(:,1)),max(ercf(:,1)) , mean(ercf(:,2)), std(ercf(:, 2)),min(ercf(:, 2)), max(ercf(:, 2)) , mean(ercf(:,3)), std(ercf(:, 3)),min(ercf(:,3 )),max(ercf(:, 3)))
 end
 
 sprintf("pkt 4 etykiety klienta")
 
 fprintf("\n|czesc|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
-fprintf("|----------|\n")
+fprintf("|---|---|---|----|---|---|---|---|---|---|---|---|---|\n")
 
 for p=1:columns(parts)
     ercf_client = zeros(rep_cnt, 3);
@@ -255,7 +255,7 @@ for p=1:columns(parts)
         ercf_client(rep, 2) = mean(toClient(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(test(:,1)));
         ercf_client(rep, 3) = mean(toClient(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test(:,1)));
     end
-    fprintf("|%f|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n", parts(p), first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)),min(ercf_client(:, 2)), max(ercf_client(:, 2)) , mean(ercf_client(:,3)), std(ercf_client(:, 3)),min(ercf_client(:,3 )), max(ercf(:, 3)))
+    fprintf("|%.4f|%d  %d|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|\n", parts(p), first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)),min(ercf_client(:, 2)), max(ercf_client(:, 2)) , mean(ercf_client(:,3)), std(ercf_client(:, 3)),min(ercf_client(:,3 )), max(ercf(:, 3)))
 end
 
 
@@ -266,22 +266,22 @@ parzen_res = zeros(1, columns(parzen_widths));
 apriori = repmat([0.25], rows(test(:,2:end)), 1);
 sprintf("pkt 5 different parzen windows")
 fprintf("\n|parzen width|error|\n")
-fprintf("|-------------|\n")
+fprintf("|------|-------|\n")
 for w=1:columns(parzen_widths)
         pdfparzen_para = para_parzen(tr, parzen_widths(w));
         base_ercf = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test(:,1));
-        fprintf("|%f|%f|\n", parzen_widths(w), base_ercf)
+        fprintf("|%.4f|%.4f|\n", parzen_widths(w), base_ercf)
         parzen_res(1, w) = base_ercf;
 end
 
 parzen_res_client = zeros(1, columns(parzen_widths));
 sprintf("pkt 5 etykiety klienta")
 fprintf("\n|parzen width|error|\n")
-fprintf("|-------------|\n")
+fprintf("|------|-------|\n")
 for w=1:columns(parzen_widths)
         pdfparzen_para = para_parzen(tr, parzen_widths(w));
         base_ercf = mean(toClient(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test(:,1)));
-        fprintf("|%f|%f|\n", parzen_widths(w), base_ercf)
+        fprintf("|%.4f|%.4f|\n", parzen_widths(w), base_ercf)
         parzen_res(1, w) = base_ercf;
 end
 
@@ -297,7 +297,7 @@ parts = [1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0];
 sprintf("pkt 6 dwukrotnie większe prawdopodobieństwo apriori dla maści czarnych")
 labels = unique(train(:,1));
 fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
-fprintf("|----------|\n")
+fprintf("|---|---|---|----|---|---|---|---|---|---|---|---|\n")
 
 ercf = zeros(rep_cnt, 3);
 ercf_client = zeros(rep_cnt, 3);
@@ -316,15 +316,15 @@ for rep=1:rep_cnt
     ercf_client(rep, 2) = mean(toClient(bayescls(testred(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(testred(:,1)));
     ercf_client(rep, 3) = mean(toClient(bayescls(testred(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(testred(:,1)));
 end
-fprintf("|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n",first_idx, second_idx, mean(ercf(:,1)), std(ercf(:, 1)),min(ercf(:,1)),max(ercf(:,1)) , mean(ercf(:,2)), std(ercf(:, 2)), min(ercf(:, 2)), max(ercf(:, 2)), mean(ercf(:,3)), std(ercf(:, 3)), min(ercf(:,3 )), max(ercf(:, 3)))
+fprintf("|%d  %d|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|\n",first_idx, second_idx, mean(ercf(:,1)), std(ercf(:, 1)),min(ercf(:,1)),max(ercf(:,1)) , mean(ercf(:,2)), std(ercf(:, 2)), min(ercf(:, 2)), max(ercf(:, 2)), mean(ercf(:,3)), std(ercf(:, 3)), min(ercf(:,3 )), max(ercf(:, 3)))
 
 ercf
 
 sprintf("pkt 6 etykiety klienta")
 ercf_client
 fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
-fprintf("|----------|\n")
-fprintf("|%d  %d|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|%f|\n",first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)), min(ercf_client(:, 2)), max(ercf_client(:, 2)), mean(ercf_client(:,3)), std(ercf_client(:, 3)), min(ercf_client(:,3 )), max(ercf_client(:, 3)))
+fprintf("|---|---|---|----|---|---|---|---|---|---|---|---|\n")
+fprintf("|%d  %d|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|\n",first_idx, second_idx, mean(ercf_client(:,1)), std(ercf_client(:, 1)),min(ercf_client(:,1)),max(ercf_client(:,1)) , mean(ercf_client(:,2)), std(ercf_client(:, 2)), min(ercf_client(:, 2)), max(ercf_client(:, 2)), mean(ercf_client(:,3)), std(ercf_client(:, 3)), min(ercf_client(:,3 )), max(ercf_client(:, 3)))
 
 
 sprintf("pkt 7 czy normalizacja potrzebna?")
@@ -333,11 +333,11 @@ std(train(:,2:end))
 % Mo�e warto sprawdzi�, jak to wygl�da w poszczeg�lnych klasach?
 stds = zeros(rows(labels),columns(train)-1);
 fprintf("|klasa|std first_idx|std second_idx|")
-fprintf("\n|-----|\n")
+fprintf("\n|---|---|---|\n")
 for i=1:rows(labels)
     classdata = train(train(:, 1) == labels(i), 2:end);
     stds(i,:) = std(classdata);
-    fprintf("|%d|%f|%f|\n", labels(i), stds(i,1), stds(i,2))
+    fprintf("|%d|%.4f|%.4f|\n", labels(i), stds(i,1), stds(i,2))
 end
 
 % Normalizacja potrzebna?
@@ -346,7 +346,7 @@ end
 
 sprintf("normalizacja")
 fprintf("\n|cechy|pdfindep|pdfmulti|pdfparzen|\n")
-fprintf("|--------|\n")
+fprintf("|----|---|---|----|\n")
 norm_ercf = zeros(3,1);
 test_norm = [test(:, 1), normalize(test(:, 2:end))];
 train_norm = [train(:, 1), normalize(train(:, 2:end))];
@@ -359,7 +359,7 @@ apriori = repmat([0.25], rows(test_norm(:,2:end)), 1);
 norm_ercf(1) = mean(bayescls(test_norm(:,2:end), @pdf_indep, pdfindep_para, apriori) != test_norm(:,1));
 norm_ercf(2) = mean(bayescls(test_norm(:,2:end), @pdf_multi, pdfmulti_para, apriori) != test_norm(:,1));
 norm_ercf(3) = mean(bayescls(test_norm(:,2:end), @pdf_parzen, pdfparzen_para, apriori) != test_norm(:,1));
-fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, norm_ercf(1), norm_ercf(2), norm_ercf(3))
+fprintf("|%d  %d|%.4f|%.4f|%.4f|\n", first_idx, second_idx, norm_ercf(1), norm_ercf(2), norm_ercf(3))
 norm_ercf
 
 sprintf("normalizacja, cechy klienta")
@@ -368,7 +368,7 @@ norm_ercf_client = zeros(3,1);
 norm_ercf_client(1) = mean(toClient(bayescls(test_norm(:,2:end), @pdf_indep, pdfindep_para, apriori)) != toClient(test_norm(:,1)));
 norm_ercf_client(2) = mean(toClient(bayescls(test_norm(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(test_norm(:,1)));
 norm_ercf_client(3) = mean(toClient(bayescls(test_norm(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(test_norm(:,1)));
-fprintf("|%d  %d|%f|%f|%f|\n", first_idx, second_idx, norm_ercf_client(1), norm_ercf_client(2), norm_ercf_client(3))
+fprintf("|%d  %d|%.4f|%.4f|%.4f|\n", first_idx, second_idx, norm_ercf_client(1), norm_ercf_client(2), norm_ercf_client(3))
 
 
 % YOUR CODE GOES HERE 
