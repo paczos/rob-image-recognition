@@ -264,7 +264,7 @@ end
 parzen_widths = [0.0001, 0.0005, 0.001, 0.005, 0.01];
 parzen_res = zeros(1, columns(parzen_widths));
 apriori = repmat([0.25], rows(test(:,2:end)), 1);
-sprintf("pkt 5 different parzen windows")
+sprintf("pkt 5 różne szerokości okna Parzena")
 fprintf("\n|parzen width|error|\n")
 fprintf("|------|-------|\n")
 for w=1:columns(parzen_widths)
