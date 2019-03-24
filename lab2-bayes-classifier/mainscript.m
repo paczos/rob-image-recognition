@@ -402,5 +402,5 @@ ercf_1nn_norm
 
 sprintf("etykiety klienta")
 ercf_1nn_client_norm  = mean(toClient(res1nn_norm) ~= toClient(test_norm(:, 1)));
-ercf_1nn_client
+ercf_1nn_client_norm
 
