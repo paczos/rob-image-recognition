@@ -300,8 +300,8 @@ większości cech) oraz 186 (wartości skrajnie duże dla większości cech).
 Praktyczność usunięcia tych dwóch próbek widoczna jest skali wykresów
 generowanych przez plot2features. Przed eliminacją dane tworzyły dwa
 zgrupowania punktów: odstających i reszty. Po usunięciu wartości
-odstających skala wykresów pozwala zauważyć, jak wyglądają różnice
-między klasami wcześniej niewidoczne z racji swoje.
+odstających skala wykresów pozwala zauważyć to, jak wyglądają różnice
+między klasami.
 
 \subsection{Błędy dla kombinacji}\label{bux142ux119dy-dla-kombinacji}
 
@@ -553,6 +553,39 @@ Zmiana pradobodobieństwa (oraz redukcja części zbioru testowego) miała
 pozytywny wpływ na wyniki klasyfikacji, co pozwala stwierdzić, że użyte
 prawdopodobieństwo lepiej oddaje naturę klasyfikowanych danych.
 
+Macierz pomyłek klasyfikatora dla surowych danych testowych
+
+\begin{verbatim}
+   228     0     0     0     0     0     0     0
+     0   226     0     0     0     1     0     1
+    12     0   207     0     0     0     9     0
+     1     0     2   225     0     0     0     0
+     0     0     0     0   227     0     0     1
+     0     5     0     0     0   223     0     0
+     1     0     5     0     0     0   222     0
+     0     1     0     0     0     0     0   227
+\end{verbatim}
+
+Macierz pomyłek klasyfikatora po wspomnianych modyfikacjach:
+
+\begin{verbatim}
+   228     0     0     0     0     0     0     0
+     0   113     0     0     0     1     0     0
+     4     0   105     1     0     0     4     0
+     1     0     1   226     0     0     0     0
+     0     0     0     0   226     0     0     2
+     0     2     0     0     0   112     0     0
+     1     0     2     0     0     0   111     0
+     0     1     0     0     0     0     0   227
+\end{verbatim}
+
+Zmiana prawdopodobieństwa apriori sprawiła, że więcej oryginalne błędne
+przypadków klasyfikacji zostało sklasyfikowanych poprawnie, np.
+wcześniej znacznie więcej obiektów klasy 3 było klasyfikowanych jako 1,
+po zmianie prawdopobieństw (oraz liczności zbioru testowego w obrębie
+maści czarnych) zmniejszył się udział takich przypadków w ogólnym
+błędzie klasyfikatora, poprawiając ogólnie jakość jego klasyfikacji.
+
 \subsection{Normalizacja danych}\label{normalizacja-danych}
 
 Odchylenie standardowe dla cech 3 i 4: \texttt{0.00092},
@@ -599,7 +632,10 @@ cechy & pdfindep & pdfmulti & pdfparzen w=0.001\tabularnewline
 \bottomrule
 \end{longtable}
 
-Bardzo małe wartości odchylenia standardowego w klasach cech 3 i 4 sprawiają, że normalizacja danych nie jest specjalnie potrzebna, o czym świadczy brak różnicy w wynikach klasyfikacji dla przyjętej liczby cyfr znaczących.
+Bardzo małe wartości odchylenia standardowego w klasach cech 3 i 4
+sprawiają, że normalizacja danych nie jest specjalnie potrzebna, o czym
+świadczy brak różnicy w wynikach klasyfikacji dla przyjętej liczby cyfr
+znaczących.
 
 \subsection{1NN vs Bayes}\label{nn-vs-bayes}
 
@@ -610,7 +646,13 @@ Klasyfikator uzyskje 1NN porównywalne wyniki do klasyfikatora Bayesa
 zakładającego \texttt{apriori\ =\ 0.25}, jednak przy przejściu do
 etykiet klienta widać zauważalną różnicę błędów na korzyść 1NN, co
 sugeruje, że problematyczne dla 1NN punkty pochodzą z równoważnych dla
-klienta klas.
+klienta klas oryginalnie traktowanych jako różne.
+
+Normalizacja danych dla 1NN pogorszyła minimalnie wyniki klasyfikacji
+\texttt{ercf\_1nn\_norm\ =\ \ 0.021382} (stały się identyczne jak dla
+klasyfikatora Bayesa), używając etykiet klienta:
+\texttt{ercf\_1nn\_client\_norm\ =\ \ 0.004386} (różnica dopiero na
+ostatniej cyfrze znaczącej).
 
 
     % Add a bibliography block to the postdoc
