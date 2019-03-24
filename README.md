@@ -216,4 +216,4 @@ Gdy zastosujemy etykiety klienta: `ercf_1nn_client = 0.004385`
 
 Klasyfikator uzyskje 1NN porównywalne wyniki do klasyfikatora Bayesa zakładającego `apriori = 0.25`, jednak przy przejściu do etykiet klienta widać zauważalną różnicę błędów na korzyść 1NN, co sugeruje, że problematyczne dla 1NN punkty pochodzą z równoważnych dla klienta klas oryginalnie traktowanych jako różne. 
 
-Normalizacja danych dla 1NN pogorszyła minimalnie wyniki klasyfikacji `ercf_1nn_norm =  0.021382` (stały się identyczne jak dla klasyfikatora Bayesa),  natomiast używając etykiet klienta – bez mian: `ercf_1nn_client_norm =  0.0043860`
+Normalizacja danych dla 1NN pogorszyła minimalnie wyniki klasyfikacji `ercf_1nn_norm =  0.021382` (stały się identyczne jak dla klasyfikatora Bayesa), używając etykiet klienta: `ercf_1nn_client_norm =  0.004386` (różnica dopiero na ostatniej cyfrze
