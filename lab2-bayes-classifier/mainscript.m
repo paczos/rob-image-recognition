@@ -1,7 +1,6 @@
 % malutki plik do uruchomienia funkcji pdf
 load pdf_test.txt
 size(pdf_test)
-format longE
 % ile jest klas?
 labels = unique(pdf_test(:,1));
 
@@ -199,6 +198,8 @@ base_ercf(3) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para, apriori
 fprintf("|%d  %d|%.4f|%.4f|%.4f|\n", first_idx, second_idx, base_ercf(1), base_ercf(2), base_ercf(3))
 base_ercf
 
+confMx(test(:,1), bayescls(test(:,2:end), @pdf_indep, pdfindep_para, apriori))
+
 sprintf("pkt 3 etykiety klienta")
 fprintf("\n|cechy|pdfindep|pdfmulti|pdfparzen|\n")
 base_ercf_client = zeros(1,3);
@@ -296,8 +297,6 @@ apriori = [0.165 0.085 0.085 0.165 0.165 0.085 0.085 0.165];
 parts = [1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0];
 sprintf("pkt 6 dwukrotnie większe prawdopodobieństwo apriori dla maści czarnych")
 labels = unique(train(:,1));
-fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
-fprintf("|---|---|---|----|---|---|---|---|---|---|---|---|\n")
 
 ercf = zeros(rep_cnt, 3);
 ercf_client = zeros(rep_cnt, 3);
@@ -315,9 +314,11 @@ for rep=1:rep_cnt
     ercf_client(rep, 1) = mean(toClient(bayescls(testred(:,2:end), @pdf_indep, pdfindep_para, apriori)) != toClient(testred(:,1)));
     ercf_client(rep, 2) = mean(toClient(bayescls(testred(:,2:end), @pdf_multi, pdfmulti_para, apriori)) != toClient(testred(:,1)));
     ercf_client(rep, 3) = mean(toClient(bayescls(testred(:,2:end), @pdf_parzen, pdfparzen_para, apriori)) != toClient(testred(:,1)));
+    confMx(testred(:,1), bayescls(testred(:,2:end), @pdf_indep, pdfindep_para, apriori))
 end
+fprintf("\n|cechy|pdfindep|std|min|max|pdfmulti|std|min|max|pdfparzen|std|min|max|\n")
+fprintf("|---|---|---|----|---|---|---|---|---|---|---|---|\n")
 fprintf("|%d  %d|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|%.4f|\n",first_idx, second_idx, mean(ercf(:,1)), std(ercf(:, 1)),min(ercf(:,1)),max(ercf(:,1)) , mean(ercf(:,2)), std(ercf(:, 2)), min(ercf(:, 2)), max(ercf(:, 2)), mean(ercf(:,3)), std(ercf(:, 3)), min(ercf(:,3 )), max(ercf(:, 3)))
-
 ercf
 
 sprintf("pkt 6 etykiety klienta")
@@ -372,17 +373,34 @@ fprintf("|%d  %d|%.4f|%.4f|%.4f|\n", first_idx, second_idx, norm_ercf_client(1),
 
 
 % YOUR CODE GOES HERE 
-ercf_1nn = eval1nn(train, test);
 res1nn = zeros(rows(test), 1);
 
 for i=1:rows(test)
-        res1nn(i) = cls1nn(train, test(i, 2:end));
+    res1nn(i) = cls1nn(train, test(i, 2:end));
 end
 
 sprintf("błąd dla 1nn")
-ercf_1nn
 ercf_1nn  = mean(res1nn ~= test(:, 1));
+ercf_1nn
 
 sprintf("etykiety klienta")
 ercf_1nn_client  = mean(toClient(res1nn) ~= toClient(test(:, 1)));
 ercf_1nn_client
+
+
+sprintf("normalizacja danych dla 1nn")
+
+res1nn_norm = zeros(rows(test_norm), 1);
+
+for i=1:rows(test_norm)
+    res1nn_norm(i) = cls1nn(train_norm, test_norm(i, 2:end));
+end
+
+sprintf("błąd dla 1nn norm")
+ercf_1nn_norm  = mean(res1nn_norm ~= test_norm(:, 1));
+ercf_1nn_norm
+
+sprintf("etykiety klienta")
+ercf_1nn_client_norm  = mean(toClient(res1nn_norm) ~= toClient(test_norm(:, 1)));
+ercf_1nn_client
+
