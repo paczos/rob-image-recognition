@@ -153,6 +153,32 @@ etykiety klienta:
 
 Zmiana pradobodobieństwa (oraz redukcja części zbioru testowego) miała pozytywny wpływ na wyniki klasyfikacji, co pozwala stwierdzić, że użyte prawdopodobieństwo lepiej oddaje naturę klasyfikowanych danych.
 
+Macierz pomyłek klasyfikatora dla surowych danych testowych
+```
+   228     0     0     0     0     0     0     0
+     0   226     0     0     0     1     0     1
+    12     0   207     0     0     0     9     0
+     1     0     2   225     0     0     0     0
+     0     0     0     0   227     0     0     1
+     0     5     0     0     0   223     0     0
+     1     0     5     0     0     0   222     0
+     0     1     0     0     0     0     0   227
+```
+Macierz pomyłek klasyfikatora po wspomnianych modyfikacjach:
+```
+   228     0     0     0     0     0     0     0
+     0   113     0     0     0     1     0     0
+     4     0   105     1     0     0     4     0
+     1     0     1   226     0     0     0     0
+     0     0     0     0   226     0     0     2
+     0     2     0     0     0   112     0     0
+     1     0     2     0     0     0   111     0
+     0     1     0     0     0     0     0   227
+
+```
+Zmiana prawdopodobieństwa apriori sprawiła, że więcej oryginalne błędne przypadków klasyfikacji zostało sklasyfikowanych poprawnie, np. wcześniej znacznie więcej obiektów klasy 3 było klasyfikowanych jako 1, po zmianie prawdopobieństw (oraz liczności zbioru testowego w obrębie maści czarnych) zmniejszył się udział takich przypadków w ogólnym błędzie klasyfikatora, poprawiając ogólnie jakość jego klasyfikacji.
+
+
 ## Normalizacja danych
 
 Odchylenie standardowe dla cech 3 i 4: `0.00092`, `0.00095`
