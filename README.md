@@ -1,4 +1,3 @@
-# lab 2
 ## Eliminacja wartości odstających
 
 Ze zbioru uczącego usunięto próbki 642 (wartości skrajnie małe dla większości cech) oraz 186 (wartości skrajnie duże dla większości cech). Praktyczność usunięcia tych dwóch próbek widoczna jest skali wykresów generowanych przez plot2features. Przed eliminacją dane tworzyły dwa zgrupowania punktów: odstających i reszty. Po usunięciu wartości odstających skala wykresów pozwala zauważyć to, jak wyglądają różnice między klasami.
@@ -215,6 +214,6 @@ Bardzo małe wartości odchylenia standardowego w klasach cech 3 i 4 sprawiają,
 Błąd klasyfikatora 1NN wyniósł: `ercf_1nn = 0.018092`
 Gdy zastosujemy etykiety klienta: `ercf_1nn_client = 0.004385`
 
-Klasyfikator uzyskje 1NN porównywalne wyniki do klasyfikatora Bayesa zakładającego `apriori = 0.25`, jednak przy przejściu do etykiet klienta widać zauważalną różnicę błędów na korzyść 1NN, co sugeruje, że problematyczne dla 1NN punkty pochodzą z równoważnych dla klienta klas. 
+Klasyfikator uzyskje 1NN porównywalne wyniki do klasyfikatora Bayesa zakładającego `apriori = 0.25`, jednak przy przejściu do etykiet klienta widać zauważalną różnicę błędów na korzyść 1NN, co sugeruje, że problematyczne dla 1NN punkty pochodzą z równoważnych dla klienta klas oryginalnie traktowanych jako różne. 
 
-
+Normalizacja danych dla 1NN pogorszyła minimalnie wyniki klasyfikacji `ercf_1nn_norm =  0.021382` (stały się identyczne jak dla klasyfikatora Bayesa),  natomiast używając etykiet klienta – bez mian: `ercf_1nn_client_norm =  0.0043860`
