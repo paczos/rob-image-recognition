@@ -27,6 +27,10 @@ function [sepplane posmiss negmiss] = perceptron(pclass, nclass)
 	%% 4. Optionally you can include additional conditions to the stop criterion
 	%%		200 iterations can take a while and probably in most cases is unnecessary
 	% TODO: ADD OPTIMIZATION
+	if norm(correction)<2
+	    sprintf("stopcriterion at %d", i)
+	    break
+	end
 	++i;
   until i > 200;
 

@@ -1,12 +1,12 @@
 % mainscript is rather short this time
-
+tic
 % primary component count
 comp_count = 80; 
 
 [tvec tlab tstv tstl] = readSets(); 
 
 % let's look at the first digit in the training set
-imshow(1-reshape(tvec(1,:), 28, 28)');
+%imshow(1-reshape(tvec(1,:), 28, 28)');
 
 % let's check labels in both sets
 [unique(tlab)'; unique(tstl)']
@@ -78,4 +78,4 @@ compErrors(cfmx)
 
 % poprawy pojedyńczych klasyfikatorów o 1.5% juz są ok
 
-% 
+toc
