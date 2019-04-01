@@ -45,8 +45,8 @@ toptenfives = (tvec(tfivelab, :))(1:10, 1:2);
 
 perceptron(toptenthrees, toptenfives)
 
-%full set
-
+% full set for 0vs1 3vs5
+perceptron(tzerolab, tonelab)
 perceptron(tthreelab, tfivelab)
 
 
