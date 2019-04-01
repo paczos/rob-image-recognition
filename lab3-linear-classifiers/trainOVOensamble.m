@@ -9,11 +9,17 @@ function ovosp = trainOVOensamble(tset, tlab, htrain)
 %   the second column contains negative class label
 %   columns (3:end) contain separating plane coefficients
 
+
+% ovosp 1 2 BIAS (... 80 cech...)
+
+
   labels = unique(tlab);
   
   % nchoosek produces all possible unique pairs of labels
   % that's exactly what we need for ovo classifier
   pairs = nchoosek(labels, 2);
+
+  % columns(tset) l cech, 1 przesunięcie (bias), 2 kolumny na etykiety
   ovosp = zeros(rows(pairs), 2 + 1 + columns(tset));
   
   for i=1:rows(pairs)
