@@ -1,5 +1,4 @@
 % mainscript is rather short this time
-tic
 % primary component count
 comp_count = 80; 
 
@@ -66,16 +65,9 @@ compErrors(cfmx)
 %
 % YOUR CODE GOES HERE
 
-
-
-
-% wyciągnac pierwsze 10 zer 10 jedynek i na małym zbiorze zrobić wybitnie dobry perceptron (kształt cyfr bardzo dobrze je separuje od siebie)
-
-
 % może się zdarzyć że klasyfikator zacznie oscylowac, lepiej ćwiczyć na łatwo rozróżnialnych cyfrach (łatwe 1 i 0, trudne są 3 i 5)
 
 % jak już mamy perceptron, to bawimy się jak polepszyć
 
 % poprawy pojedyńczych klasyfikatorów o 1.5% juz są ok
 
-toc

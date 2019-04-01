@@ -13,31 +13,19 @@ function [sepplane posmiss negmiss] = perceptron(pclass, nclass)
   nNeg = rows(nclass); % number of negative samples
   tset = [ ones(nPos, 1) pclass; -ones(nNeg, 1) -nclass]; % denormalizowane dane, 
   lrate = @(iteration) 1/(1+iteration);
+  mincorrectionnorm = 5;
   i = 1;
   do 
-	%%% YOUR CODE GOES HERE %%%
-	%% You should:
-	%% 1. Check which samples are misclassified (boolean column vector)
 	misclassified = dot(repmat(sepplane,rows(tset),1), tset,2) < 0; % these are missclassified samples
-	%% 2. Compute separating plane correction
-	%%		This is sum of misclassfied samples coordinate times learning rate
 	correction = lrate(i)*sum(tset(misclassified, :));
-	%% 3. Modify solution (i.e. sepplane)
     sepplane = sepplane+correction;
-	%% 4. Optionally you can include additional conditions to the stop criterion
-	%%		200 iterations can take a while and probably in most cases is unnecessary
-	% TODO: ADD OPTIMIZATION
-	if norm(correction)<2
+	if norm(correction)<mincorrectionnorm
 	    sprintf("stopcriterion at %d", i)
 	    break
 	end
 	++i;
   until i > 200;
 
-  %%% YOUR CODE GOES HERE %%%
-  %% You should:
-  %% 1. Compute the numbers (coefficients) of misclassified positive 
-  %%    and negative samples
   res = dot(repmat(sepplane,rows(tset),1), tset,2);
   miss = res < 0;
   nPos
