@@ -65,9 +65,9 @@ compErrors(cfmx)
 %
 % YOUR CODE GOES HERE
 
-% może się zdarzyć że klasyfikator zacznie oscylowac, lepiej ćwiczyć na łatwo rozróżnialnych cyfrach (łatwe 1 i 0, trudne są 3 i 5)
+% classifier may start to oscilate around some local solution
+% it's worth starting with some easy to distinguish digits, e.g. 1 and 0. On the other hand, among the most difficult are 3 and 5
 
-% jak już mamy perceptron, to bawimy się jak polepszyć
-
-% poprawy pojedyńczych klasyfikatorów o 1.5% juz są ok
+% when the perceptron is ready, try to achieve some minor improvement for individual classifier
+% improvement of 1.5% can be treated as good enough
 

@@ -10,7 +10,7 @@ function ovosp = trainOVOensamble(tset, tlab, htrain)
 %   columns (3:end) contain separating plane coefficients
 
 
-% ovosp 1 2 BIAS (... 80 cech...)
+% ovosp 1 2 BIAS (... 80 features...)
 
 
   labels = unique(tlab);
