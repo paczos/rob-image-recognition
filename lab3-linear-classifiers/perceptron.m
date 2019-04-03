@@ -11,7 +11,7 @@ function [sepplane posmiss negmiss] = perceptron(pclass, nclass)
   sepplane = rand(1, columns(pclass) + 1) - 0.5;
   nPos = rows(pclass); % number of positive samples
   nNeg = rows(nclass); % number of negative samples
-  tset = [ ones(nPos, 1) pclass; -ones(nNeg, 1) -nclass]; % denormalizowane dane, 
+  tset = [ ones(nPos, 1) pclass; -ones(nNeg, 1) -nclass]; % denormalized data
   lrate = @(iteration) 1/(1+iteration);
   mincorrectionnorm = 5;
   i = 1;
@@ -20,7 +20,7 @@ function [sepplane posmiss negmiss] = perceptron(pclass, nclass)
 	correction = lrate(i)*sum(tset(misclassified, :));
     sepplane = sepplane+correction;
 	if norm(correction)<mincorrectionnorm
-	    sprintf("stopcriterion at %d", i)
+	    %sprintf("stopcriterion at %d", i)
 	    break
 	end
 	++i;
@@ -28,7 +28,5 @@ function [sepplane posmiss negmiss] = perceptron(pclass, nclass)
 
   res = dot(repmat(sepplane,rows(tset),1), tset,2);
   miss = res < 0;
-  nPos
-  nNeg
-  posmiss = rows(tset(tset(miss==1, 1)==1))/nPos
-  negmiss = rows(tset(tset(miss==1, 1)==-1))/nNeg
+  posmiss = rows(tset(tset(miss==1, 1)==1))/nPos;
+  negmiss = rows(tset(tset(miss==1, 1)==-1))/nNeg;
