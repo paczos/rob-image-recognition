@@ -19,7 +19,7 @@ function ovosp = trainOVOensamble(tset, tlab, htrain)
   % that's exactly what we need for ovo classifier
   pairs = nchoosek(labels, 2);
 
-  % columns(tset) l cech, 1 przesunięcie (bias), 2 kolumny na etykiety
+  % columns(tset) n_nfeatures, 1 bias, 2 clumns for labels
   ovosp = zeros(rows(pairs), 2 + 1 + columns(tset));
   
   for i=1:rows(pairs)
