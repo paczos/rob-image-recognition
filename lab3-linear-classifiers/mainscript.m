@@ -27,26 +27,21 @@ tstl += 1;
 %
 % YOUR CODE GOES HERE - testing of the perceptron function
 
-tzerolab = tlab == 1;
-toptenzeros = (tvec(tzerolab, :))(1:10, 1:2);
+fprintf("\n|plabel|nlabel|posmiss|negmiss|\n")
+fprintf("|---|---|---|---|\n")
+pairs = nchoosek(1:10, 2);
+for i=1:rows(pairs)
+    p = pairs(i, 1);
+    n = pairs(i, 2);
+    plab = tlab == p;
+    toptenzeros = (tvec(plab, :))(:, [n p]);
 
-tonelab = tlab == 2;
-toptenones = (tvec(tonelab, :))(1:10, 1:2);
+    nlab = tlab == n;
+    toptenones = (tvec(nlab, :))(:, [n p]);
 
-perceptron(toptenzeros, toptenones)
-
-
-tthreelab = tlab == 4;
-toptenthrees= (tvec(tthreelab, :))(1:10, 1:2);
-
-tfivelab = tlab == 6;
-toptenfives = (tvec(tfivelab, :))(1:10, 1:2);
-
-perceptron(toptenthrees, toptenfives)
-
-% full set for 0vs1 3vs5
-perceptron(tzerolab, tonelab)
-perceptron(tthreelab, tfivelab)
+    [sepplane posmiss negmiss] = perceptron(toptenzeros, toptenones);
+    fprintf("|%d|%d|%f|%f|\n", p-1, n-1, posmiss, negmiss)
+end
 
 
 % training of the whole ensemble
