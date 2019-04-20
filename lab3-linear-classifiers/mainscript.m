@@ -5,7 +5,7 @@ comp_count = 80;
 [tvec tlab tstv tstl] = readSets(); 
 
 % let's look at the first digit in the training set
-%imshow(1-reshape(tvec(1,:), 28, 28)');
+% imshow(1-reshape(tvec(1,:), 28, 28)');
 
 % let's check labels in both sets
 [unique(tlab)'; unique(tstl)']
@@ -95,16 +95,26 @@ gclab = unamvoting(gtvec, govo);
 gcfmx = confMx(gtlab, gclab)
 compErrors(gcfmx)
 
-% extract cannonical ovo classifiers analogous to the items of groups
+% extract cannonical ovo classifiers analogous to the items of groups and use them to classify numbers within groups
 
 ovo0 = extrGroupFromEnsemble(ovo, g0);
 tvec0 = gtvec(gtlab==1,:);
 g0clab = unamvoting(tvec0, ovo0);
-g0confMx = confMx(tvec0, g0clab);
+size(tvec0)
+size(g0clab)
+% ans =
+  %
+  %   17403      80
+  %
+  %ans =
+  %
+  %   17403       1
+  % this cannot work ^ out of mem
+g0confMx = confMx(tvec0, g0clab)
 
 ovo1 = extrGroupFromEnsemble(ovo, g1);
 tvec1 = gtvec(gtlab==2,:);
-g1clab = unamvoting(tvec0, ovo1);
+g1clab = unamvoting(tvec1, ovo1);
 g1confMx = confMx(tvec1, g1clab);
 
 ovo2 = extrGroupFromEnsemble(ovo, g2);
@@ -112,9 +122,8 @@ tvec2 = gtvec(gtlab==3,:);
 g2clab = unamvoting(tvec2, ovo2);
 g2confMx = confMx(tvec2, g2clab);
 
-% use classic enseble to classify remaining numbers
-
-tvec3 = gtvec(gtlab==4,:);
+% use original ensemble to classify numbers for which these modified ensembles were inconclusive
+tvec3 = gtvec(gtlab==10,:);
 g3clab = unamvoting(tvec3, ovo);
 g3confMx = confMx(tvec3, g3clab);
 
