@@ -32,7 +32,12 @@ function ovosp = trainOVOensamble(tset, tlab, htrain)
 	
 	% train 5 classifiers and select the best one
     [sp fp fn] = trainSelect(posSamples, negSamples, 5, htrain);
-	
+
+    if pairs(i, :) == [3 5]
+        disp("special treatment for")
+    end
+
+
 	% what to do with errors?
 	
     % store the separating plane coefficients (this is our classifier)

@@ -115,4 +115,13 @@ Zbiór testowy MNIST
 ```
 
 Rozwiązanie kanoniczne najgorzej radzi sobie z rozpoznawaniem cyfry 5. Jest ona mylona z 3 i 8, a czasem też z 6
-4 z 6 i 9
+
+Natomiast 4 z 6 i 9
+
+Ostatecznie utworzono grupy: 5 3 8    
+       4 6 0
+       1 7 2 9 
+   
+       
+       
+

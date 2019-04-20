@@ -66,3 +66,61 @@ compErrors(cfmx)
 % when the perceptron is ready, try to achieve some minor improvement for individual classifier
 % improvement of 1.5% can be treated as good enough
 
+g0 = [3 5 8];
+g1 = [4 6 0];
+g2 = [1 2 7 9];
+
+% increase by one because we had shifted numbers by one to make indexing easier
+g0 += 1;
+g1 += 1;
+g2 += 1;
+
+g0tlab = tlab(ismember(tlab, g0), :);
+g0tvec = tvec(ismember(tlab, g0), :);
+
+g1tlab = tlab(ismember(tlab, g1), :);
+g1tvec = tvec(ismember(tlab, g1), :);
+
+g2tlab = tlab(ismember(tlab, g2), :);
+g2tvec = tvec(ismember(tlab, g2), :);
+
+% using custom labels for groups so we can train group classifiers treating items belonging to one group as the same
+gtlab = [ones(rows(g0tlab), 1); ones(rows(g1tlab), 1)+1; ones(rows(g2tlab), 1)+2];
+gtvec = [g0tvec; g1tvec; g2tvec];
+
+govo = trainOVOensamble(gtvec, gtlab, @perceptron);
+
+% check group ensemble on train set
+gclab = unamvoting(gtvec, govo);
+gcfmx = confMx(gtlab, gclab)
+compErrors(gcfmx)
+
+% extract cannonical ovo classifiers analogous to the items of groups
+
+ovo0 = extrGroupFromEnsemble(ovo, g0);
+tvec0 = gtvec(gtlab==1,:);
+g0clab = unamvoting(tvec0, ovo0);
+g0confMx = confMx(tvec0, g0clab);
+
+ovo1 = extrGroupFromEnsemble(ovo, g1);
+tvec1 = gtvec(gtlab==2,:);
+g1clab = unamvoting(tvec0, ovo1);
+g1confMx = confMx(tvec1, g1clab);
+
+ovo2 = extrGroupFromEnsemble(ovo, g2);
+tvec2 = gtvec(gtlab==3,:);
+g2clab = unamvoting(tvec2, ovo2);
+g2confMx = confMx(tvec2, g2clab);
+
+% use classic enseble to classify remaining numbers
+
+tvec3 = gtvec(gtlab==4,:);
+g3clab = unamvoting(tvec3, ovo);
+g3confMx = confMx(tvec3, g3clab);
+
+gconfMx = g0confMx+g1confMx+g2confMx+g3confMx;
+compErrors(gconfMx)
+
+
+
+
