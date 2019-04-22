@@ -20,7 +20,7 @@ tlab += 1;
 tstl += 1;
 
 % To successfully prepare ensemble you have to implement perceptron function
-% I would use 10 first zeros and 10 fisrt ones 
+% I would use 10 first zeros and 10 first ones
 % and only 2 first primary components
 % It'll allow printing of intermediate results in perceptron function
 
@@ -75,14 +75,17 @@ g0 += 1;
 g1 += 1;
 g2 += 1;
 
-g0tlab = tlab(ismember(tlab, g0), :);
-g0tvec = tvec(ismember(tlab, g0), :);
+g0sel = ismember(tlab, g0);
+g0tlab = tlab(g0sel, :);
+g0tvec = tvec(g0sel, :);
 
-g1tlab = tlab(ismember(tlab, g1), :);
-g1tvec = tvec(ismember(tlab, g1), :);
+g1sel = ismember(tlab, g1);
+g1tlab = tlab(g1sel, :);
+g1tvec = tvec(g1sel, :);
 
-g2tlab = tlab(ismember(tlab, g2), :);
-g2tvec = tvec(ismember(tlab, g2), :);
+g2sel = ismember(tlab, g2);
+g2tlab = tlab(g2sel, :);
+g2tvec = tvec(g2sel, :);
 
 % using custom labels for groups so we can train group classifiers treating items belonging to one group as the same
 gtlab = [ones(rows(g0tlab), 1); ones(rows(g1tlab), 1)+1; ones(rows(g2tlab), 1)+2];
@@ -91,7 +94,10 @@ gtvec = [g0tvec; g1tvec; g2tvec];
 govo = trainOVOensamble(gtvec, gtlab, @perceptron);
 
 % check group ensemble on train set
-gclab = unamvoting(gtvec, govo);
+
+% run ensemble to split into groups
+gclab = unamvoting(gtvec, govo);       1
+
 gcfmx = confMx(gtlab, gclab)
 compErrors(gcfmx)
 
@@ -99,27 +105,20 @@ compErrors(gcfmx)
 
 ovo0 = extrGroupFromEnsemble(ovo, g0);
 tvec0 = gtvec(gtlab==1,:);
-g0clab = unamvoting(tvec0, ovo0);
+g0clab = unamvoting(tvec0, ovo0, 11);
 size(tvec0)
 size(g0clab)
-% ans =
-  %
-  %   17403      80
-  %
-  %ans =
-  %
-  %   17403       1
-  % this cannot work ^ out of mem
-g0confMx = confMx(tvec0, g0clab)
+
+g0confMx = confMx(g0tlab, g0clab)
 
 ovo1 = extrGroupFromEnsemble(ovo, g1);
 tvec1 = gtvec(gtlab==2,:);
-g1clab = unamvoting(tvec1, ovo1);
+g1clab = unamvoting(tvec1, ovo1, 11);
 g1confMx = confMx(tvec1, g1clab);
 
 ovo2 = extrGroupFromEnsemble(ovo, g2);
 tvec2 = gtvec(gtlab==3,:);
-g2clab = unamvoting(tvec2, ovo2);
+g2clab = unamvoting(tvec2, ovo2, 11);
 g2confMx = confMx(tvec2, g2clab);
 
 % use original ensemble to classify numbers for which these modified ensembles were inconclusive
