@@ -1,6 +1,6 @@
 % mainscript is rather short this time
 % primary component count
-comp_count = 80; 
+comp_count = 80;
 
 [tvec tlab tstv tstl] = readSets(); 
 
@@ -89,6 +89,7 @@ g2tvec = tvec(g2sel, :);
 
 % using custom labels for groups so we can train group classifiers treating items belonging to one group as the same
 gtlab = [ones(rows(g0tlab), 1); ones(rows(g1tlab), 1)+1; ones(rows(g2tlab), 1)+2];
+gtflab = [g0tlab; g1tlab; g2tlab];
 gtvec = [g0tvec; g1tvec; g2tvec];
 
 govo = trainOVOensamble(gtvec, gtlab, @perceptron);
@@ -96,7 +97,7 @@ govo = trainOVOensamble(gtvec, gtlab, @perceptron);
 % check group ensemble on train set
 
 % run ensemble to split into groups
-gclab = unamvoting(gtvec, govo);       1
+gclab = unamvoting(gtvec, govo);
 
 gcfmx = confMx(gtlab, gclab)
 compErrors(gcfmx)
@@ -104,27 +105,27 @@ compErrors(gcfmx)
 % extract cannonical ovo classifiers analogous to the items of groups and use them to classify numbers within groups
 
 ovo0 = extrGroupFromEnsemble(ovo, g0);
-tvec0 = gtvec(gtlab==1,:);
+tvec0 = gtvec(gclab==1,:);
 g0clab = unamvoting(tvec0, ovo0, 11);
-size(tvec0)
-size(g0clab)
-
-g0confMx = confMx(g0tlab, g0clab)
+g0clabfr = castToFullRange(g0clab, g0);
+g0confMx = confMx(gtflab(gclab==1), g0clabfr)
 
 ovo1 = extrGroupFromEnsemble(ovo, g1);
-tvec1 = gtvec(gtlab==2,:);
+tvec1 = gtvec(gclab==2, :);
 g1clab = unamvoting(tvec1, ovo1, 11);
-g1confMx = confMx(tvec1, g1clab);
+g1clabfr = castToFullRange(g1clab, g1);
+g1confMx = confMx(gtflab(gclab==2), g1clabfr)
 
 ovo2 = extrGroupFromEnsemble(ovo, g2);
-tvec2 = gtvec(gtlab==3,:);
+tvec2 = gtvec(gclab==3,:);
 g2clab = unamvoting(tvec2, ovo2, 11);
-g2confMx = confMx(tvec2, g2clab);
+g2clabfr = castToFullRange(g2clab, g2);
+g2confMx = confMx(gtflab(gclab==3), g2clabfr)
 
 % use original ensemble to classify numbers for which these modified ensembles were inconclusive
-tvec3 = gtvec(gtlab==10,:);
+tvec3 = gtvec(gclab==4,:);
 g3clab = unamvoting(tvec3, ovo);
-g3confMx = confMx(tvec3, g3clab);
+g3confMx = confMx(gtflab(gclab==4), g3clab)
 
 gconfMx = g0confMx+g1confMx+g2confMx+g3confMx;
 compErrors(gconfMx)

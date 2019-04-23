@@ -9,6 +9,6 @@ for i=1:rows(pairs)
     extr |=  ovo(:, 1) == group(f) & ovo(:, 2)==group(s);
 end
 
-extr = ovo(extr, :)
+extr = ovo(extr, :);
 
 end
