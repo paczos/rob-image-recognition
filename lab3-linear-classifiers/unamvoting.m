@@ -13,8 +13,6 @@ function clab = unamvoting(tset, clsmx, rejectedIndex)
         reject = rejectedIndex;
     end
 	maxvotes = rows(labels) - 1; % unanimity voting in one vs. one scheme
-	reject = max(labels) + 1;
-
 	% cast votes of classifiers
 	votes = voting(tset, clsmx);
 
