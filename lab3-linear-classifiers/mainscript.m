@@ -66,9 +66,11 @@ compErrors(cfmx)
 % when the perceptron is ready, try to achieve some minor improvement for individual classifier
 % improvement of 1.5% can be treated as good enough
 
-g0 = [3 5 8];
-g1 = [4 6 0];
-g2 = [1 2 7 9];
+% todo split into better groups -> maybe 4 4 2?
+
+g0 = [0 8 9];
+g1 = [1 2 7];
+g2 = [3 4 5 6];
 
 % increase by one because we had shifted numbers by one to make indexing easier
 g0 += 1;
