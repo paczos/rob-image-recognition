@@ -76,15 +76,14 @@ for p=1:size(parts, 1)
 
     sprintf("group classifiers results")
     gcfmx = confMx(gtlab, gclab)
-    e =  compErrors(gcfmx)
-    if e(1)> bestSuccess
+    [e, e2, e3] =  compErrors(gcfmx)
+    if e> bestSuccess
     sprintf("found new best grouping")
     bestSuccess=e(i)
     bestGroup = groups
 
     end
-    if e(1)
-    if (e(1)<0.9)
+    if (e<0.9)
     continue
     end
 
@@ -114,7 +113,6 @@ for p=1:size(parts, 1)
     summaryConfMx
     compErrors(summaryConfMx)
 
-end
 end
 
 
