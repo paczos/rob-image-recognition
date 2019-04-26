@@ -116,3 +116,8 @@ for p=1:size(parts, 1)
 
 end
 end
+
+
+sprintf("best grouping")
+bestSuccess
+bestGroup
