@@ -114,5 +114,5 @@ for p=1:size(parts, 1)
     summaryConfMx
     compErrors(summaryConfMx)
 
-
+end
 end
