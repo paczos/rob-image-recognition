@@ -41,7 +41,7 @@ for p=1:size(parts, 1)
     groups = parts{p};
  fflush(stdout)
 
-    sprintf("this partition has %d groups", columns(groups) )
+    %sprintf("this partition has %d groups", columns(groups) );
     gtlab = [];
     gtflab = [];
     gtvec = [];
@@ -62,7 +62,7 @@ for p=1:size(parts, 1)
         gtvec = [gtvec; partgtvec];
      end
 
-     if unique(gtlab)<2 | groupMoreThan2==false
+     if or(unique(gtlab)<2, groupMoreThan2==false)
         % we do not care about grouping into a single group
         continue
      end
@@ -74,44 +74,18 @@ for p=1:size(parts, 1)
     % run ensemble to split into groups
     gclab = unamvoting(gtvec, govo);
 
-    sprintf("group classifiers results")
-    gcfmx = confMx(gtlab, gclab)
-    [e, e2, e3] =  compErrors(gcfmx)
-    if e> bestSuccess
+    gcfmx = confMx(gtlab, gclab);
+    e =  compErrors(gcfmx);
+    if e(1)> bestSuccess
     sprintf("found new best grouping")
-    bestSuccess=e(i)
+    e
+    bestSuccess=e(1)
     bestGroup = groups
-
-    end
-    if (e<0.9)
-    continue
     end
 
-
-    summaryConfMx = zeros(10,11);
-
-
-    % extract cannonical ovo classifiers analogous to the items of groups and use them to classify numbers within groups
-    for g=1:columns(groups);
-            group  =  groups{g};
-        ovo0 = extrGroupFromEnsemble(ovo, group);
-        tvec0 = gtvec(gclab==g,:);
-        g0clab = unamvoting(tvec0, ovo0, 11);
-        g0clabfr = castToFullRange(g0clab, group);
-        sprintf("group 0 results")
-        g0confMx = confMx(gtflab(gclab==g), g0clabfr)
-        compErrors(g0confMx)
-        summaryConfMx = summaryConfMx+g0confMx;
-    end
-
-
-    sprintf("results using grouping")
-    sprintf("groups:")
-    groups
-    sprintf("conf mx and results:")
-
-    summaryConfMx
-    compErrors(summaryConfMx)
+    sprintf("best so far")
+    bestSuccess
+    bestGroup
 
 end
 
