@@ -26,7 +26,7 @@ tstl += 1;
 
 %
 % YOUR CODE GOES HERE - testing of the perceptron function
-
+sprintf("perceptron tests")
 fprintf("\n|plabel|nlabel|posmiss|negmiss|\n")
 fprintf("|---|---|---|---|\n")
 pairs = nchoosek(1:10, 2);
@@ -48,11 +48,13 @@ end
 ovo = trainOVOensamble(tvec, tlab, @perceptron);
 
 % check your ensemble on train set
+sprintf("cannonical ensemble on train set")
 clab = unamvoting(tvec, ovo);
 cfmx = confMx(tlab, clab)
 compErrors(cfmx)
 
 % repeat on test set
+sprintf("cannonical ensemble on test set")
 clab = unamvoting(tstv, ovo);
 cfmx = confMx(tstl, clab)
 compErrors(cfmx)
@@ -66,11 +68,11 @@ compErrors(cfmx)
 % when the perceptron is ready, try to achieve some minor improvement for individual classifier
 % improvement of 1.5% can be treated as good enough
 
-% todo split into better groups -> maybe 4 4 2?
 
-g0 = [0 8 9];
-g1 = [1 2 7];
-g2 = [3 4 5 6];
+
+g0 = [0 1 2 3 5 8];
+g1 = [4 6];
+g2 = [7 9];
 
 % increase by one because we had shifted numbers by one to make indexing easier
 g0 += 1;
@@ -100,8 +102,9 @@ govo = trainOVOensamble(gtvec, gtlab, @perceptron);
 
 % run ensemble to split into groups
 gclab = unamvoting(gtvec, govo);
-
+sprintf("group classifiers results")
 gcfmx = confMx(gtlab, gclab)
+
 compErrors(gcfmx)
 
 % extract cannonical ovo classifiers analogous to the items of groups and use them to classify numbers within groups
@@ -110,25 +113,32 @@ ovo0 = extrGroupFromEnsemble(ovo, g0);
 tvec0 = gtvec(gclab==1,:);
 g0clab = unamvoting(tvec0, ovo0, 11);
 g0clabfr = castToFullRange(g0clab, g0);
+sprintf("groupgtvec 0 results")
 g0confMx = confMx(gtflab(gclab==1), g0clabfr)
+compErrors(g0confMx)
 
 ovo1 = extrGroupFromEnsemble(ovo, g1);
 tvec1 = gtvec(gclab==2, :);
 g1clab = unamvoting(tvec1, ovo1, 11);
 g1clabfr = castToFullRange(g1clab, g1);
+sprintf("group 1 results")
 g1confMx = confMx(gtflab(gclab==2), g1clabfr)
+compErrors(g1confMx)
 
+sprintf("group 2 results")
 ovo2 = extrGroupFromEnsemble(ovo, g2);
 tvec2 = gtvec(gclab==3,:);
 g2clab = unamvoting(tvec2, ovo2, 11);
 g2clabfr = castToFullRange(g2clab, g2);
 g2confMx = confMx(gtflab(gclab==3), g2clabfr)
+compErrors(g2confMx)
 
 % use original ensemble to classify numbers for which these modified ensembles were inconclusive
 tvec3 = gtvec(gclab==4,:);
 g3clab = unamvoting(tvec3, ovo);
 g3confMx = confMx(gtflab(gclab==4), g3clab)
 
+sprintf("results using grouping")
 gconfMx = g0confMx+g1confMx+g2confMx+g3confMx;
 compErrors(gconfMx)
 
