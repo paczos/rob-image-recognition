@@ -118,9 +118,20 @@ Rozwiązanie kanoniczne najgorzej radzi sobie z rozpoznawaniem cyfry 5. Jest ona
 
 Natomiast 4 z 6 i 9
 
-Ostatecznie utworzono grupy: 5 3 8    
-       4 6 0
-       1 7 2 9 
+Utworzono grupy:  3 5 8    
+       0 4 6
+       1 2 7 9 
+       
+       
+       
+       
+g0 = [0 1 2 3 5 8];
+g1 = [4 6];
+g2 = [7 9];
+0.888233   0.099917   0.011850
+
+
+
    
        
        
