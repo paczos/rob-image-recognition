@@ -17,4 +17,11 @@ function clab = unamvoting(tset, clsmx, rejectedIndex)
 	votes = voting(tset, clsmx);
 
 	[mv clab] = max(votes, [], 2);
-	clab(mv ~= maxvotes) = reject;
+	if rows(labels) ~= 1
+    	clab(mv ~= maxvotes) = reject;
+    else
+    clab = zeros(rows(votes),1);
+    for i=1:rows(votes)
+      clab(i) = labels(logical(votes(i, :)));
+    end
+    end
