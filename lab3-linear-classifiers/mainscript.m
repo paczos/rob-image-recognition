@@ -120,7 +120,7 @@ compErrors(g0confMx)
 ovo1 = extrGroupFromEnsemble(ovo, g1);
 tvec1 = gtvec(gclab==2, :);
 g1clab = unamvoting(tvec1, ovo1, 11);
-g1clabfr = castToFullRange(g1clab, g1);
+g1clabfr = g1clab;
 sprintf("group 1 results")
 g1confMx = confMx(gtflab(gclab==2), g1clabfr)
 compErrors(g1confMx)
@@ -129,7 +129,7 @@ sprintf("group 2 results")
 ovo2 = extrGroupFromEnsemble(ovo, g2);
 tvec2 = gtvec(gclab==3,:);
 g2clab = unamvoting(tvec2, ovo2, 11);
-g2clabfr = castToFullRange(g2clab, g2);
+g2clabfr = g2clab;
 g2confMx = confMx(gtflab(gclab==3), g2clabfr)
 compErrors(g2confMx)
 
