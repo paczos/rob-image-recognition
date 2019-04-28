@@ -2,16 +2,16 @@
 
 ## Klasyfikacji znaków przy użyciu klasyfikatorów liniowych
 Klasyfikatory liniowe zajmują się odseparowywaniem dwóch grup punktów za pomocą, w zależności od liczby wymiarów (cech), prostą, płaszczyzną, hiperpłaszczyzną.
-W przypadku, gdy dane zawierają więcej niż dwie grupy, np. w klasyfikacja cyfr (10 klas), stosowane są techniki mające na celu uogólnieniu wyników klasyfikacji binarnych na wiele klas.
+W przypadku, gdy dane zawierają więcej niż dwie grupy, np. w klasyfikacja cyfr (10 klas), stosowane są techniki mające na celu uogólnienie klasyfikacji na wiele klas przy użyciu binarnych klasyfikatorów.
 
 Jednym z możliwych rozwiązań jest technika OvO (Onve versus One) – utworzenie $N\choose 2$ klasfikatorów – wszystkich możliwych par klas. Następnie przeprowadzenie klasyfikacji danego elementu, za pomocą wszystkich uzyskanych w ten sposób $\frac{n(n-1)}{2}$ klasyfikatorów. Następnie sumowane są wyniki, zaś ostatecznym wynikiem klasyfikacji jest klasa, na którą zagłosowało najwiecej składowych klasyfikatorów. W przypadku, gdy klasyfikatory nie są zgodne, można uznać daną decyzję jako wymijającą. 
 
-Klasyfikacja znaków wiąże się z klasyfikacja danych wielowymiarowych. W przypadku danych MNIST, każdy pixel obrazka jest traktowany  jako oddzielna cecha. Aby zmniejszyć wymiarowość problemu, zastosowano algorytm PCA dla 80 składowych, aby tak dobrać osie układu współrzędnych, aby wzdłuż nich współrzędne miały największą wariancję.  
+Klasyfikacja znaków wiąże się z klasyfikacja danych wielowymiarowych. W przypadku danych MNIST, każdy pixel obrazka jest traktowany  jako oddzielna cecha. Aby zmniejszyć wymiarowość problemu, zastosowano algorytm PCA dla 80 składowych, aby tak obrócić osie układu współrzędnych, by wzdłuż nich współrzędne miały jak największą wariancję.  
 
 
 ## Algorytm wyznaczania parametrów płaszczyzny decyzyjnej
 
-Płaszczyznę decyzyjną wyznaczono za pomocą metody perceptronowej opartej na bardzo prostej zależności zwiazanej z sumą elementów niepoprawnie sklasyfikowanych. Wynika to z tego, że funkcja oceny J(a) jest proporcjonalna do sumy odległości punktów źle sklasyfikowanych do powierzchni decyzyjnej. Po odpowiednich przekształceniach, metoda sformalizowana jest nastepująco:
+Płaszczyznę decyzyjną wyznaczono za pomocą metody perceptronowej opartej na bardzo prostej zależności zwiazanej z sumą elementów niepoprawnie sklasyfikowanych. Wynika to z tego, że funkcja oceny J(a) jest proporcjonalna do sumy odległości punktów źle sklasyfikowanych od powierzchni decyzyjnej. Po odpowiednich przekształceniach, metoda sformalizowana jest nastepująco:
 
 $$ a(k+1) = a(k) + \eta(k) \sum_{y \in Y}{y} $$
 
@@ -22,6 +22,8 @@ k – nr iteracji
 Y – zbiór niepoprawnie sklasyfikowanych elementów
 
 Zastosowano zmienny współczynnik korekcji $\eta$, którego wartość zależy od nr iteracji. Gdy aktualne rozwiązanie zbliża się do lokalnego ektremum, zmniejszają się zmiany płaszczyzny decyzyjnej, co pozwala na zbliżenie się do najlepszych wartości wag.
+
+Optymalizacją zwiększającą dwukrotnie szybkość (dla $mincorrectionnorm = 5$) działania perceptronu (kosztem precyzji), było zatrzymanie liczenia, gdy rożnica sum błędów między iteracjami jest mniejsza niż zadana wartość.
 
 ## Jakość klasyfikacji
 
@@ -42,7 +44,7 @@ Zbiór testowy MINST
 
 ### Perceptron
 
-Zbiór uczący MNIST
+Przetestowano implementację perceptronu dla wszystkich par cyfr:
 
 |plabel|nlabel|posmiss|negmiss|
 |---|---|---|---|
@@ -92,11 +94,13 @@ Zbiór uczący MNIST
 |7|9|0.326257|0.364935|
 |8|9|0.256196|0.638259|
 
-
+Użycie opisanej implementacji perceptronu wewnątrz komitetu OvO dla zbioru testowego MNIST dało następujące rezultaty:
 
 |OK|Błąd |Odrzucenie|
 |---|---|---|
 | 0.8951| 0.0759|0.0288|
+
+Macierz pomyłek:
 
 ``` 
    5599      0     23     12      5     61     71      4     29      2    117
@@ -141,6 +145,7 @@ Grupy zwracane przez kmeans były następnie analizowane pod kątem procentowego
 Zastosowano algorytm kmeans w celu podziału cyfr na dwie grupy:
 
 g0 = [0 1 4 6 7];
+
 g1 = [2 3 5 8 9];
 
 Wyniki klasyfikatorów przydzielających cyfry do jednej z dwóch grup:
@@ -158,6 +163,8 @@ Sumaryczne wyniki dla klasyfikatorów działających wewnątrz grup, po scaleniu
 
 
 ### Podział na trzy grupy za pomocą kmeans
+
+Podział na dwie grupy wg kmeans nie przyniósł poprawy (wręcz odwrotnie), dlatego podjęto próbę podziału cyfr na trzy grupy.
 
 Analogicznie do poprzednego podziału zbioru cyft, przydzielono każdą z cyfr do jednej z trzech grup:
 
@@ -181,7 +188,7 @@ Sumaryczne wyniki dla klasyfikatorów działających wewnątrz grup, po scaleniu
 |0.884067|0.103667|0.012267| 
 
 
-### Najlepszy podział 
+### Najlepszy znaleziony podział 
 
 Aby zmaksymalizować skuteczność wstępnego podziału zbioru cyfr – znaleźć najlepszy podział, można przetestować każdy możliwy podział. Liczność możliwych podziałów zbioru opisują liczby Bella. Dla zbioru 10-elementowego (0-9) istnieje $B_10=115975$ podziałów. Sprawdzenie każdego z podziałów wymaga wytrenowania klasyfikatorów na zbiorze MNIST, co zajmuje kilka sekund. Ostatecznie, sprawdzenie wszystkich możliwości uznano za nieopłacalne czasowo. Pomimo nieopłacalności sprawdzenia wszystkich możliwości, za pomocą skryptu `autopartition`, sprawdzajacego kolejno wszystkie możliwe podziały, zwracającego na bieżąco najlepszy do tej pory znaleziony, wykryto najlepszy z testowanych podziałów:
 
@@ -292,6 +299,6 @@ Sumaryczne wyniki dla klasyfikatorów działających wewnątrz grup, po scaleniu
 
 Sumaryczne wyniki są nieco lepsze w stosunku do rozwiązania z użyciem komitetu z własną implementacją perceptronu, jednak nie można stwierdzić, że są one lepsze w stosunku do rozwiązania referencyjnego (przyczyną może być np. optymalizacja działania perceptronu polegająca na zakończeniu obliczania, gdy zmiany płaszczyzny są mniejsze niż określona ręcznie wartość, która przyspiesza ok. dwukrotnie działanie programu). 
 
-Skuteczność tego rozwiązania oparta jest w dużej mierze na wysokiej skuteczności klasyfikatorów binarnych w grupach 2 i 3. Przez to, że te grupy zawierają tylko dwie cyfry, to są to pojedyncze kanoniczne klasyfikatory wyciągnięte poza komitet głosujący, nie mogą wycofać się z głosowania, co okazuje się, że ma pozytywny wpływ na sumaryczny wynik. Możliwe, że istnieje jeszcze lepszy sposób podziału zbioru cyfr, który pozwoliłby na uzyskanie znacznej poprawy jakości. 
+Skuteczność tego rozwiązania oparta jest w dużej mierze na wysokiej skuteczności klasyfikatorów binarnych w grupach 2 i 3. Przez to, że te grupy zawierają tylko dwie cyfry, to są to pojedyncze kanoniczne klasyfikatory wyciągnięte poza komitet głosujący, nie mogą wycofać się z głosowania, co okazuje się, że ma pozytywny wpływ na sumaryczny wynik. Możliwe, że istnieje jeszcze lepszy sposób podziału zbioru cyfr, który pozwoliłby na uzyskanie znacznej poprawy jakości klasyfikacji. 
 
 
