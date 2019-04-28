@@ -192,7 +192,7 @@ Sumaryczne wyniki dla klasyfikatorów działających wewnątrz grup, po scaleniu
 
 ### Najlepszy znaleziony podział 
 
-Aby zmaksymalizować skuteczność wstępnego podziału zbioru cyfr – znaleźć najlepszy podział, można przetestować każdy możliwy podział. Liczność możliwych podziałów zbioru opisują liczby Bella. Dla zbioru 10-elementowego (0-9) istnieje $B_10=115975$ podziałów. Sprawdzenie każdego z podziałów wymaga wytrenowania klasyfikatorów na zbiorze MNIST, co zajmuje kilka sekund. Ostatecznie, sprawdzenie wszystkich możliwości uznano za nieopłacalne czasowo. Pomimo nieopłacalności sprawdzenia wszystkich możliwości, za pomocą skryptu `autopartition`, sprawdzajacego kolejno wszystkie możliwe podziały, zwracającego na bieżąco najlepszy do tej pory znaleziony, wykryto najlepszy z testowanych podziałów:
+Aby zmaksymalizować skuteczność wstępnego podziału zbioru cyfr – znaleźć najlepszy podział, można przetestować każdy możliwy podział. Liczność możliwych podziałów zbioru opisują liczby Bella. Dla zbioru 10-elementowego (cyfry 0-9) istnieje $B_{10}=115975$ podziałów. Sprawdzenie każdego z podziałów wymaga wytrenowania klasyfikatorów na zbiorze MNIST, co zajmuje kilka sekund. Ostatecznie, sprawdzenie wszystkich możliwości uznano za nieopłacalne czasowo. Pomimo nieopłacalności sprawdzenia wszystkich możliwości, za pomocą skryptu `autopartition`, sprawdzajacego kolejno wszystkie możliwe podziały, zwracającego na bieżąco najlepszy do tej pory znaleziony, wykryto najlepszy z testowanych podziałów:
 
 g0 = [0 1 2 3 5 8];
 
