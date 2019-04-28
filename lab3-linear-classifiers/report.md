@@ -135,6 +135,8 @@ Zbiór testowy MNIST
       5      3      5      8     33      5      1     23      2    878     46
 ```
 
+Analiza macierzy pomyłek sugeruje, że komitet najgorzej sobie radzi z cyfrą 5 – jest ona mylona z 3, 8 i 6, wobec tej cyfry komitet najczęściej wstrzymał się od decyzji. Problematyczna też jest cyfra 4 – mylona jest z 6 i 8.
+
 ## Próba usprawnienia klasyfikacji
 
 Zgodnie z sugerowanym w instrukcji do laboratorium sposobem usprawnienia klasyfikacji, dokonano próby podziału cyfy na grupy, aby następnie dokonać klasyfikacji na zmniejszonej liczbie klas wewnątrz grup.
