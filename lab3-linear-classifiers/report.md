@@ -4,6 +4,18 @@
 
 ## Algorytm wyznaczania parametrów płaszczyzny decyzyjnej
 
+Płaszczyznę decyzyjną wyznaczono za pomocą metody perceptronowej opartej na bardzo prostej zależności zwiazanej z sumą elementów niepoprawnie sklasyfikowanych. Wynika to z tego, że funkcja oceny $ J(a) $ jest proporcjonalna do sumy odległości punktów źle sklasyfikowanych do powierzchni decyzyjnej.
+
+$$ a(k+1) = a(k) + \eta(k) \sum_{y \in Y}{y} $$
+
+$$\eta = \frac{1}{\sqrt{k}}$$
+
+k – nr iteracji
+
+Y – zbiór niepoprawnie sklasyfikowanych elementów
+
+Zastosowano zmienny współczynnik korekcji $\eta$, którego wartość zależy od nr iteracji. Gdy aktualne rozwiązanie zbliża się do lokalnego ektremum, zmniejszają się zmiany płaszczyzny decyzyjnej, co pozwala na zbliżenie się do najlepszych wartości wag.
+
 ## Jakość klasyfikacji
 
 
@@ -75,8 +87,6 @@ Zbiór uczący MNIST
 
 
 
-
-
 |OK|Błąd |Odrzucenie|
 |---|---|---|
 | 0.8951| 0.0759|0.0288|
@@ -114,32 +124,133 @@ Zbiór testowy MNIST
       5      3      5      8     33      5      1     23      2    878     46
 ```
 
+## Próba usprawnienia klasyfikacji
 
+Zgodnie z sugerowanym w instrukcji do laboratorium sposobem usprawnienia klasyfikacji, dokonano próby podziału cyfy na grupy, aby następnie dokonać klasyfikacji na zmniejszonej liczbie klas wewnątrz grup.
 
-Rozwiązanie kanoniczne najgorzej radzi sobie z rozpoznawaniem cyfry 5. Jest ona mylona z 3 i 8, a czasem też z 6
+### Podział na dwie lub trzy grupy za pomocą kmeans
 
-Natomiast 4 z 6 i 9
-
-Utworzono grupy:  3 5 8    
-       0 4 6
-       1 2 7 9 
-       
-       
-       
-       
-g0 = [0 1 2 3 5 8];
-g1 = [4 6];
-g2 = [7 9];
-0.888233   0.099917   0.011850
-
-
-
+Zastosowano algorytm kmeans w celu podziału cyfr na dwie grupy: 
 g0 = [0 1 4 6 7];
 g1 = [2 3 5 8 9];
 
-0.447100   0.538800   0.014100
 
-   
-       
-       
+|OK|Błąd |Odrzucenie|    
+|---|---|---|
+|0.9089333|0.0855000|0.0055667|
+
+sumarycznie
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.866100|0.122350|0.011550|
+
+
+### Podział na trzy grupy za pomocą kmeans
+
+g0 = [0 2 3 5 6];
+
+g1 = [1 8];
+
+g2 = [4 7 9];
+
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.9326333|0.0625333|0.0048333|
+
+
+sumarycznie
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.884067|0.103667|0.012267| 
+
+
+### Najlepsze grupowanie 
+
+Aby eksperymentalnie dojść do najlepszego możliwego podziału cyfr na grupy, aby zmaksymalizować skuteczność wstępnego podziału, należałoby przetestować ich każdy możliwy podział. Liczność podziału opisują liczby Bella. Dla zbioru 10-elementowego (0-9) istnieje $B_10=115975$ podziałów. Sprawdzanie każdego z podziałów wymaga wytrenowania klasyfikatorów na zbiorze MNIST, co zajmuje kilka sekund. Sumarycznie, sprawdzenie wszystkich możliwości uznano za nieopłacalne czasowo. Za pomocą skryptu autopartition, sprawdzajacego możliwe podziały, zwracającego na bieżąco najlepszy do tej pory znaleziony, wykryto najlepszy z testowanych podziałów:
+
+g0 = [4 5 6 7 8 9];
+
+g1 = [0 1];
+
+g2 = [2 3];
+
+```
+   35046     558     378      44
+     640   10766     244     110
+     626     212   11321      55
+```
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.9522167|0.0443000|0.0034833|
+
+Pierwsza grupa:
+
+```
+   5695      2     32     12      0     52      0      0     25      0     34
+      0   6451     41     24      0     13      0      0     90      0     57
+     29     29   5353     66      0     31      0      0     72      0     96
+      6     31     83   5480      0    175      0      0     73      0    115
+     23     42     63     13      0      2      0      0     41      0     30
+     39     14     43    161      0   4694      0      0    107      0    132
+     40     35    145      2      0    126      0      0     36      0     42
+     29     67     96     27      0      4      0      0     20      0     20
+     17     77     69    123      0    133      0      0   5138      0    132
+     42     37     51     92      0     35      0      0     75      0     31
+```
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.903586|0.077440|0.018974|
+
+
+Druga grupa
+
+```
+      0      0      0      0     15      0     47      0      0      0      0
+      0      0      0      0      6      0      4      0      0      0      0
+      0      0      0      0    110      0     98      0      0      0      0
+      0      0      0      0      1      0     28      0      0      0      0
+      0      0      0      0   5243      0     33      0      0      0      0
+      0      0      0      0     57      0    106      0      0      0      0
+      0      0      0      0     44      0   5446      0      0      0      0
+      0      0      0      0     62      0      3      0      0      0      0
+      0      0      0      0     35      0     51      0      0      0      0
+      0      0      0      0    145      0      2      0      0      0      0
+```
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.92658|0.07342|0.00000|
+
+Trzecia grupa:
+
+```
+      0      0      0      0      0      0      0      5      0      0      0
+      0      0      0      0      0      0      0     43      0      5      0
+      0      0      0      0      0      0      0     44      0     11      0
+      0      0      0      0      0      0      0     68      0     71      0
+      0      0      0      0      0      0      0     35      0    209      0
+      0      0      0      0      0      0      0      8      0     49      0
+      0      0      0      0      0      0      0      0      0      0      0
+      0      0      0      0      0      0      0   5739      0    191      0
+      0      0      0      0      0      0      0     22      0     52      0
+      0      0      0      0      0      0      0    209      0   5182      0
+
+```
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.91443|0.08557|0.00000|
+
+
+Sumarycznie po scaleniu wyników
+
+|OK|Błąd |Odrzucenie|
+|---|---|---|
+|0.910187|0.078289|0.011523|
+
 
