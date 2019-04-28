@@ -12,7 +12,7 @@ function [sepplane posmiss negmiss] = perceptron(pclass, nclass)
   nPos = rows(pclass); % number of positive samples
   nNeg = rows(nclass); % number of negative samples
   tset = [ ones(nPos, 1) pclass; -ones(nNeg, 1) -nclass]; % denormalized data
-  lrate = @(iteration) 1/(1+iteration);
+  lrate = @(iteration) 1/sqrt(iteration);
   mincorrectionnorm = 5;
   i = 1;
   do 
