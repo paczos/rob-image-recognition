@@ -112,7 +112,6 @@ compErrors(gcfmx)
 ovo0 = extrGroupFromEnsemble(ovo, g0);
 tvec0 = gtvec(gclab==1,:);
 g0clab = unamvoting(tvec0, ovo0, 11);
-g0clabfr = castToFullRange(g0clab, g0);
 sprintf("groupgtvec 0 results")
 g0confMx = confMx(gtflab(gclab==1), g0clabfr)
 compErrors(g0confMx)
@@ -127,9 +126,10 @@ compErrors(g1confMx)
 
 sprintf("group 2 results")
 ovo2 = extrGroupFromEnsemble(ovo, g2);
-tvec2 = gtvec(gclab==3,:);
+tvec2 = gtvec(gclab==3, :);
 g2clab = unamvoting(tvec2, ovo2, 11);
 g2clabfr = g2clab;
+sprintf("group 2 results")
 g2confMx = confMx(gtflab(gclab==3), g2clabfr)
 compErrors(g2confMx)
 
@@ -139,9 +139,10 @@ g3clab = unamvoting(tvec3, ovo);
 g3confMx = confMx(gtflab(gclab==4), g3clab)
 
 sprintf("results using grouping")
-gconfMx = g0confMx+g1confMx+g2confMx+g3confMx;
+gconfMx = g0confMx + g1confMx + g2confMx + g3confMx;
 compErrors(gconfMx)
 
-
-
-
+%[idx ] = kmeans(tvec, 3);
+%tabulate(tlab(idx==1))
+%tabulate(tlab(idx==2))
+%tabulate(tlab(idx==3))
