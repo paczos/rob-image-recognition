@@ -1,5 +1,6 @@
 % mainscript is rather short this time
 % primary component count
+pkg load statistics
 comp_count = 80;
 
 [tvec tlab tstv tstl] = readSets(); 
@@ -43,6 +44,11 @@ for i=1:rows(pairs)
     fprintf("|%d|%d|%f|%f|\n", p-1, n-1, posmiss, negmiss)
 end
 
+[idx ] = kmeans(tvec, 3);
+tabulate(tlab(idx==1))
+tabulate(tlab(idx==2))
+tabulate(tlab(idx==3))
+
 
 % training of the whole ensemble
 ovo = trainOVOensamble(tvec, tlab, @perceptron);
@@ -69,9 +75,10 @@ compErrors(cfmx)
 % improvement of 1.5% can be treated as good enough
 
 
-
 g0 = [0 1 2 3 5 8];
+
 g1 = [4 6];
+
 g2 = [7 9];
 
 % increase by one because we had shifted numbers by one to make indexing easier
@@ -112,6 +119,7 @@ compErrors(gcfmx)
 ovo0 = extrGroupFromEnsemble(ovo, g0);
 tvec0 = gtvec(gclab==1,:);
 g0clab = unamvoting(tvec0, ovo0, 11);
+g0clabfr = castToFullRange(g0clab, g0);
 sprintf("groupgtvec 0 results")
 g0confMx = confMx(gtflab(gclab==1), g0clabfr)
 compErrors(g0confMx)
@@ -142,7 +150,3 @@ sprintf("results using grouping")
 gconfMx = g0confMx + g1confMx + g2confMx + g3confMx;
 compErrors(gconfMx)
 
-%[idx ] = kmeans(tvec, 3);
-%tabulate(tlab(idx==1))
-%tabulate(tlab(idx==2))
-%tabulate(tlab(idx==3))
