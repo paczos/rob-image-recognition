@@ -1,14 +1,21 @@
 # ROB lab 3,4 Rozpoznawanie cyfr pisanych ręcznie Paweł Paczuski (271082)
 
 ## Klasyfikacji znaków przy użyciu klasyfikatorów liniowych
+Klasyfikatory liniowe zajmują się odseparowywaniem dwóch grup punktów za pomocą, w zależności od liczby wymiarów (cech), prostą, płaszczyzną, hiperpłaszczyzną.
+W przypadku, gdy dane zawierają więcej niż dwie grupy, np. w klasyfikacja cyfr (10 klas), stosowane są techniki mające na celu uogólnieniu wyników klasyfikacji binarnych na wiele klas.
+
+Jednym z możliwych rozwiązań jest technika OvO (Onve versus One) – utworzenie $N\choose 2$ klasfikatorów – wszystkich możliwych par klas. Następnie przeprowadzenie klasyfikacji danego elementu, za pomocą wszystkich uzyskanych w ten sposób $\frac{n(n-1)}{2}$ klasyfikatorów. Następnie sumowane są wyniki, zaś ostatecznym wynikiem klasyfikacji jest klasa, na którą zagłosowało najwiecej składowych klasyfikatorów. W przypadku, gdy klasyfikatory nie są zgodne, można uznać daną decyzję jako wymijającą. 
+
+Klasyfikacja znaków wiąże się z klasyfikacja danych wielowymiarowych. W przypadku danych MNIST, każdy pixel obrazka jest traktowany  jako oddzielna cecha. Aby zmniejszyć wymiarowość problemu, zastosowano algorytm PCA dla 80 składowych, aby tak dobrać osie układu współrzędnych, aby wzdłuż nich współrzędne miały największą wariancję.  
+
 
 ## Algorytm wyznaczania parametrów płaszczyzny decyzyjnej
 
-Płaszczyznę decyzyjną wyznaczono za pomocą metody perceptronowej opartej na bardzo prostej zależności zwiazanej z sumą elementów niepoprawnie sklasyfikowanych. Wynika to z tego, że funkcja oceny $ J(a) $ jest proporcjonalna do sumy odległości punktów źle sklasyfikowanych do powierzchni decyzyjnej.
+Płaszczyznę decyzyjną wyznaczono za pomocą metody perceptronowej opartej na bardzo prostej zależności zwiazanej z sumą elementów niepoprawnie sklasyfikowanych. Wynika to z tego, że funkcja oceny J(a) jest proporcjonalna do sumy odległości punktów źle sklasyfikowanych do powierzchni decyzyjnej. Po odpowiednich przekształceniach, metoda sformalizowana jest nastepująco:
 
 $$ a(k+1) = a(k) + \eta(k) \sum_{y \in Y}{y} $$
 
-$$\eta = \frac{1}{\sqrt{k}}$$
+$$ \eta = \frac{1}{\sqrt{k}} $$
 
 k – nr iteracji
 
@@ -130,16 +137,20 @@ Zgodnie z sugerowanym w instrukcji do laboratorium sposobem usprawnienia klasyfi
 
 ### Podział na dwie lub trzy grupy za pomocą kmeans
 
-Zastosowano algorytm kmeans w celu podziału cyfr na dwie grupy: 
+Grupy zwracane przez kmeans były następnie analizowane pod kątem procentowego udziału poszczególnych klas. Poszczególne cyfry przydzielono do grupy, w ktorej występowały częściej. 
+Zastosowano algorytm kmeans w celu podziału cyfr na dwie grupy:
+
 g0 = [0 1 4 6 7];
 g1 = [2 3 5 8 9];
 
+Wyniki klasyfikatorów przydzielających cyfry do jednej z dwóch grup:
 
 |OK|Błąd |Odrzucenie|    
 |---|---|---|
 |0.9089333|0.0855000|0.0055667|
 
-sumarycznie
+
+Sumaryczne wyniki dla klasyfikatorów działających wewnątrz grup, po scaleniu wynikow:
 
 |OK|Błąd |Odrzucenie|
 |---|---|---|
@@ -148,34 +159,41 @@ sumarycznie
 
 ### Podział na trzy grupy za pomocą kmeans
 
+Analogicznie do poprzednego podziału zbioru cyft, przydzielono każdą z cyfr do jednej z trzech grup:
+
 g0 = [0 2 3 5 6];
 
 g1 = [1 8];
 
 g2 = [4 7 9];
 
+Wyniki klasyfikatorów przydzielających cyfry do jednej z trzech grup:
 
 |OK|Błąd |Odrzucenie|
 |---|---|---|
 |0.9326333|0.0625333|0.0048333|
 
 
-sumarycznie
+Sumaryczne wyniki dla klasyfikatorów działających wewnątrz grup, po scaleniu wynikow:
 
 |OK|Błąd |Odrzucenie|
 |---|---|---|
 |0.884067|0.103667|0.012267| 
 
 
-### Najlepsze grupowanie 
+### Najlepszy podział 
 
-Aby eksperymentalnie dojść do najlepszego możliwego podziału cyfr na grupy, aby zmaksymalizować skuteczność wstępnego podziału, należałoby przetestować ich każdy możliwy podział. Liczność podziału opisują liczby Bella. Dla zbioru 10-elementowego (0-9) istnieje $B_10=115975$ podziałów. Sprawdzanie każdego z podziałów wymaga wytrenowania klasyfikatorów na zbiorze MNIST, co zajmuje kilka sekund. Sumarycznie, sprawdzenie wszystkich możliwości uznano za nieopłacalne czasowo. Za pomocą skryptu autopartition, sprawdzajacego możliwe podziały, zwracającego na bieżąco najlepszy do tej pory znaleziony, wykryto najlepszy z testowanych podziałów:
+Aby zmaksymalizować skuteczność wstępnego podziału zbioru cyfr – znaleźć najlepszy podział, można przetestować każdy możliwy podział. Liczność możliwych podziałów zbioru opisują liczby Bella. Dla zbioru 10-elementowego (0-9) istnieje $B_10=115975$ podziałów. Sprawdzenie każdego z podziałów wymaga wytrenowania klasyfikatorów na zbiorze MNIST, co zajmuje kilka sekund. Ostatecznie, sprawdzenie wszystkich możliwości uznano za nieopłacalne czasowo. Pomimo nieopłacalności sprawdzenia wszystkich możliwości, za pomocą skryptu `autopartition`, sprawdzajacego kolejno wszystkie możliwe podziały, zwracającego na bieżąco najlepszy do tej pory znaleziony, wykryto najlepszy z testowanych podziałów:
 
-g0 = [4 5 6 7 8 9];
+g0 = [0 1 2 3 5 8];
 
-g1 = [0 1];
+g1 = [4 6];
 
-g2 = [2 3];
+g2 = [7 9];
+
+Wyniki klasyfikatorów przydzielających cyfry do jednej z trzech grup:
+
+Macierz pomyłek:
 
 ```
    35046     558     378      44
@@ -183,9 +201,13 @@ g2 = [2 3];
      626     212   11321      55
 ```
 
+Ocena klasyfikacji:
+
 |OK|Błąd |Odrzucenie|
 |---|---|---|
 |0.9522167|0.0443000|0.0034833|
+
+#### Szczegółowe wyniki klasyfikatorow działających wewnątrz grup
 
 Pierwsza grupa:
 
@@ -246,11 +268,30 @@ Trzecia grupa:
 |---|---|---|
 |0.91443|0.08557|0.00000|
 
+Elementy zbioru, których przynależności do grup wstępny przydział nie był w stanie rozstrzygnąć, zostały sklasyfikowane za pomocą pełnego zbioru klasyfikatorów:
 
-Sumarycznie po scaleniu wyników
+```
+    3    0    0    0    0    1    0    1    0    0    1
+    0    2    0    0    0    0    0    1    0    0    0
+    0    0    3    0    1    0    0    1    0    1    6
+    0    0    0    1    0    0    1    0    0    0    1
+    0    0    0    0   96    0    0    1    0    3    7
+    0    0    0    0    1    4    0    0    0    0    3
+    0    0    0    0    0    0    1    0    0    0    0
+    0    0    1    0    1    2    0    1    1    0    3
+    0    0    0    0    2    0    0    0    2    1    2
+    0    0    0    0   16    2    0    0    1   21    7
+```
+
+
+Sumaryczne wyniki dla klasyfikatorów działających wewnątrz grup, po scaleniu wynikow:
 
 |OK|Błąd |Odrzucenie|
 |---|---|---|
 |0.910187|0.078289|0.011523|
+
+Sumaryczne wyniki są nieco lepsze w stosunku do rozwiązania z użyciem komitetu z własną implementacją perceptronu, jednak nie można stwierdzić, że są one lepsze w stosunku do rozwiązania referencyjnego (przyczyną może być np. optymalizacja działania perceptronu polegająca na zakończeniu obliczania, gdy zmiany płaszczyzny są mniejsze niż określona ręcznie wartość, która przyspiesza ok. dwukrotnie działanie programu). 
+
+Skuteczność tego rozwiązania oparta jest w dużej mierze na wysokiej skuteczności klasyfikatorów binarnych w grupach 2 i 3. Przez to, że te grupy zawierają tylko dwie cyfry, to są to pojedyncze kanoniczne klasyfikatory wyciągnięte poza komitet głosujący, nie mogą wycofać się z głosowania, co okazuje się, że ma pozytywny wpływ na sumaryczny wynik. Możliwe, że istnieje jeszcze lepszy sposób podziału zbioru cyfr, który pozwoliłby na uzyskanie znacznej poprawy jakości. 
 
 
