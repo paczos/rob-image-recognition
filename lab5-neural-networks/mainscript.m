@@ -26,6 +26,8 @@ errcf = compErrors(cfmx)
 
 % now you can (probably) play with ann_training
 
+% use PCA to reduce dimensionality  
+% other method: use PCA and use all dimensions -> decorrelate data
 
 % results must be better than the reference, 
 % the logic of classification function could be different, now a simple max is used
