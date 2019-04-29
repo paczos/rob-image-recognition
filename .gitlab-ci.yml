@@ -1,0 +1,5 @@
+image: mtmiller/octave
+
+test:
+  script:
+  - octave --no-gui lab5-neural-networks/mainscript.m
