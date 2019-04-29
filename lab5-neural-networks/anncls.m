@@ -7,10 +7,12 @@ function lab = anncls(tset, hidlw, outlw)
 % lab - classification result (index of output layer neuron with highest value)
 % ATTENTION: we assume that constant value IS NOT INCLUDED in tset rows
 
-	hlact = [tset ones(rows(tset), 1)] * hidlw;
-	hlout = actf(hlact);
+	hlact = [tset ones(rows(tset), 1)] * hidlw; % value for a neuron
+	hlout = actf(hlact); %activation function 
 	
-	olact = [hlout ones(rows(hlout), 1)] * outlw;
+	olact = [hlout ones(rows(hlout), 1)] * outlw; % out layer, the ones at the end are used for bias
 	olout = actf(olact);
 
-	[~, lab] = max(olout, [], 2);
+	% this could be more complex, now only a single hidden layer is used
+
+	[~, lab] = max(olout, [], 2); % final decision 
