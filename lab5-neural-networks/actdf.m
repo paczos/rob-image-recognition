@@ -4,3 +4,4 @@ function res = actdf(sfvalue)
 
 % TODO: derivative of the activation function(sigmoid)
 	res = zeros(size(sfvalue));
+res = - exp(sfvalue) ./ (1+exp(sfvalue));
