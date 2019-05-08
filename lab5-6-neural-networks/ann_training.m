@@ -20,8 +20,8 @@ for epoch=1:noEpochs
 	tic();
 	[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, learningRate);
 	clsRes = anncls(tvec, hlnn, olnn);
-	cfmx = confMx(tlab, clsRes);
-	errcf = compErrors(cfmx);
+	cfmx = confMx(tlab, clsRes);   % it is worth looking into the cfmx in order to know which clothes are incorrectly classified
+	errcf = compErrors(cfmx);  
 	trainError(epoch) = errcf(2);
 
 	clsRes = anncls(tstv, hlnn, olnn);
@@ -33,7 +33,8 @@ for epoch=1:noEpochs
 	trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
 	fflush(stdout);
 end
-
+% epoch time 
+% this lasts 20 min so it is better to work on a limited ds
 %    1.00000   30.17691    0.24450    0.25180
 %    2.00000   31.12491    0.18698    0.19960
 %    3.00000   30.59097    0.16920    0.18040
@@ -74,7 +75,7 @@ end
 %   38.00000   31.02594    0.10293    0.12810
 %   39.00000   31.24091    0.10208    0.12770
 %   40.00000   31.09970    0.10145    0.12710
-%   41.00000   30.74089    0.10092    0.12650
+%   41.00000   30.74089    0.10092    0.12650 % number of epochs should not be bigger because the NN is already trained here
 %   42.00000   30.90121    0.10035    0.12600
 %   43.00000   31.69269    0.09975    0.12620
 %   44.00000   30.99791    0.09928    0.12620

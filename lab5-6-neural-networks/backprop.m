@@ -36,4 +36,3 @@ function [hidlw outlw terr] = backprop(tset, tslb, inihidlw, inioutlw, lr)
 		
 		% 9. Update hidden layer weights
 	end
-

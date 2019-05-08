@@ -2,4 +2,4 @@ function res = actf(tact)
 % sigmoid activation function
 % tact - total activation
 
-	res = ones(size(tact));
+res = 2 ./ (1 + exp(tact));
