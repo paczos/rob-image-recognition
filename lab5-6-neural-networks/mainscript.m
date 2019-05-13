@@ -1,23 +1,3 @@
-% implement backprop
-% it makes sense to start with a really small dataset
-load tiny.txt
-tlab = tiny(:,1);
-tvec = tiny(:,2:end);
-[hlnn olnn] = crann(columns(tvec), 4, 2);
-[size(hlnn) size(olnn)]
-
-clsRes = anncls(tvec, hlnn, olnn);
-cfmx = confMx(tlab, clsRes);
-errcf = compErrors(cfmx)
-
-[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, 0.5)
-clsRes = anncls(tvec, hlnn, olnn);
-cfmx = confMx(tlab, clsRes)
-errcf = compErrors(cfmx)
-
-
-
-
 % this small NN for tiny data should be 100% correct
 
 % now you can (probably) play with ann_training
@@ -42,9 +22,11 @@ errcf = compErrors(cfmx)
 %
 
 
-limSize = 1000;
+% best so far: 0.16080
+
 
 [tvec tlab tstv tstl] = readSets();
+limSize = rows(tvec)
 limIdx = randperm(rows(tvec));
 
 tlab += 1;
