@@ -28,18 +28,19 @@ function [hidlw outlw terr] = backprop(tset, tslb, inihidlw, inioutlw, lr)
 		hiddenLayerOut = actf([tset(i, :) 1] * hidlw);
 		outLayerOut = actf([hiddenLayerOut 1] * outlw);
 
+        % http://neuralnetworksanddeeplearning.com/chap2.html
 		% 5. Adjust total error (just to know this value)
-        sampleError = (desiredOut-outLayerOut).^2;
+        sampleError = sum((desiredOut-outLayerOut).^2);
 		terr += sampleError;
 		% 6. Compute delta error of the output layer
 		% how many delta errors should be computed here?
-        outLayerDelta = (desiredOut - outLayerOut) .* actdf(outLayerOut);
+        outLayerDelta = actdf(outLayerOut) .* (desiredOut - outLayerOut);
         outLayerAdjustment = [hiddenLayerOut 1]' * outLayerDelta * lr;
 
 		% 7. Compute delta error of the hidden layer
 		% how many delta errors should be computed here?
-		hiddenLayerDelta = actdf(hiddenLayerOut) * (outLayerDelta * outlw)
-		hiddenLayerAdjustment = [tset(i) 1]' * hiddenLayerDelta * lr;
+		hiddenLayerDelta = actdf(hiddenLayerOut) .* (outlw(1:end-1,:)*outLayerDelta')';
+		hiddenLayerAdjustment = [tset(i, :) 1]' * hiddenLayerDelta * lr;
 
 		% 8. Update output layer weights
 		outlw += outLayerAdjustment;
