@@ -20,7 +20,7 @@ errcf = compErrors(cfmx)
 
 [hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, 0.5)
 clsRes = anncls(tvec, hlnn, olnn);
-cfmx = confMx(tlab, clsRes);
+cfmx = confMx(tlab, clsRes)
 errcf = compErrors(cfmx)
 % this small NN for tiny data should be 100% correct
 
