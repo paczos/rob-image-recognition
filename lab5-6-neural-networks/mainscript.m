@@ -32,10 +32,12 @@ limIdx = randperm(rows(tvec));
 tlab += 1;
 tstl += 1;
 
-tlab = tlab(limIdx,:);
-tvec = tvec(limIdx,:);
+tlab = tlab(limIdx, :);
+tvec = tvec(limIdx, :);
+tstv = tstv(limIdx, :);
+tstl = tstl(limIdx, :);
 
-noHiddenNeurons = 100;
+noHiddenNeurons = 300;
 noEpochs = 50;
 learningRate = 0.01;
 
@@ -56,6 +58,11 @@ for epoch=1:noEpochs
 	cfmx = confMx(tlab, clsRes);   % it is worth looking into the cfmx in order to know which clothes are incorrectly classified
 	errcf = compErrors(cfmx);
 	trainError(epoch) = errcf(2);
+
+	clsRes = anncls(tstv, hlnn, olnn);
+	cfmx = confMx(tstl, clsRes);
+	errcf2 = compErrors(cfmx);
+	testError(epoch) = errcf2(2);
 	epochTime = toc();
 	disp([epoch epochTime trainError(epoch) testError(epoch)])
 	trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
