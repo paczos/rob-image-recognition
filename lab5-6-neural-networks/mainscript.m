@@ -1,12 +1,4 @@
-% implement actf & check it on a graph
-x = -5:0.1:5;
-plot(x, actf(x))
-
-% implement actdf 
-% note that input value for actdf is not x itself but actf(x)
-plot(x, actdf(actf(x)))
-
-% implement backprop 
+% implement backprop
 % it makes sense to start with a really small dataset
 load tiny.txt
 tlab = tiny(:,1);
@@ -22,6 +14,10 @@ errcf = compErrors(cfmx)
 clsRes = anncls(tvec, hlnn, olnn);
 cfmx = confMx(tlab, clsRes)
 errcf = compErrors(cfmx)
+
+
+
+
 % this small NN for tiny data should be 100% correct
 
 % now you can (probably) play with ann_training
@@ -43,5 +39,46 @@ errcf = compErrors(cfmx)
 % 
 % 
 % 
-% 
+%
+
+
+limSize = 1000;
+
+[tvec tlab tstv tstl] = readSets();
+limIdx = randperm(rows(tvec));
+
+tlab += 1;
+tstl += 1;
+
+tlab = tlab(limIdx,:);
+tvec = tvec(limIdx,:);
+
+noHiddenNeurons = 100;
+noEpochs = 50;
+learningRate = 0.01;
+
+rand()
+rndstate = rand("state");
+save rndstate.txt rndstate
+%load rndstate.txt
+%rand("state", rndstate);
+
+[hlnn olnn] = crann(columns(tvec), noHiddenNeurons, 10);
+trainError = zeros(1, noEpochs);
+testError = zeros(1, noEpochs);
+trReport = [];
+for epoch=1:noEpochs
+	tic();
+	[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, learningRate);
+	clsRes = anncls(tvec, hlnn, olnn);
+	cfmx = confMx(tlab, clsRes);   % it is worth looking into the cfmx in order to know which clothes are incorrectly classified
+	errcf = compErrors(cfmx);
+	trainError(epoch) = errcf(2);
+	epochTime = toc();
+	disp([epoch epochTime trainError(epoch) testError(epoch)])
+	trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
+	fflush(stdout);
+end
+
+
 
