@@ -22,7 +22,7 @@
 %
 
 
-% best so far: 0.16080
+% best so far: 0.114200
 
 
 [tvec tlab tstv tstl] = readSets();
