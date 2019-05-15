@@ -37,8 +37,8 @@ tlab = tlab(limIdx, :);
 tvec = tvec(limIdx, :);
 
 noHiddenNeurons = 400;
-noEpochs = 60;
-learningRate = 0.02;
+noEpochs = 70;
+learningRate = 0.025;
 
 rand()
 rndstate = rand("state");
