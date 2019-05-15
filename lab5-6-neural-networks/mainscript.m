@@ -42,9 +42,9 @@ learningRate = 0.025;
 
 rand()
 rndstate = rand("state");
-save rndstate.txt rndstate
-%load rndstate.txt
-%rand("state", rndstate);
+% save rndstate.txt rndstate
+load rndstate.txt
+rand("state", rndstate);
 
 [hlnn olnn] = crann(columns(tvec), noHiddenNeurons, 10);
 trainError = zeros(1, noEpochs);
@@ -68,6 +68,10 @@ for epoch=1:noEpochs
 	fflush(stdout);
 end
 
+
+% to beat:
+% train: 90.38% 9.62% 0.00%
+% test: 87.42% 12.58% 0.00%
 
 %noHiddenNeurons = 200;
 %noEpochs = 50;
