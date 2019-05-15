@@ -40,8 +40,8 @@ tvec = tvec(limIdx, :);
 noHiddenNeurons = 400;
 noEpochs = 200;
 learningRate = 0.5;
-learningDrop = 0.004;
-learningDropMaxTimes = 100;
+learningDropFrac = 0.1;
+minDropRate = 0.0005;
 
 
 rand()
@@ -54,7 +54,7 @@ rand("state", rndstate);
 trainError = zeros(1, noEpochs);
 testError = zeros(1, noEpochs);
 trReport = [];
-learningDropTimes = 0;
+
 prevError = 1;
 for epoch=1:noEpochs
 	tic();
@@ -72,16 +72,15 @@ for epoch=1:noEpochs
 	disp([epoch epochTime trainError(epoch) testError(epoch)])
 	trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
 
-	if (testError(epoch) >= prevError)
-        if(learningDropTimes < learningDropMaxTimes)
-            learningRate -= learningDrop;
+	if (trainError(epoch) >= prevError)
+        if(minDropRate < learningRate)
+            learningRate *= (1-learningDropFrac);
             disp("learningRate dropped to")
             learningRate
         end
-	    learningDropTimes += 1;
 	end
 
-    prevError = testError(epoch);
+    prevError = trainError(epoch);
 	fflush(stdout);
 end
 learningDropTimes
