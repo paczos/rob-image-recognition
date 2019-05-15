@@ -38,7 +38,7 @@ tvec = tvec(limIdx, :);
 
 noHiddenNeurons = 400;
 noEpochs = 60;
-learningRate = 0.015;
+learningRate = 0.01;
 
 rand()
 rndstate = rand("state");
