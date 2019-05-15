@@ -38,10 +38,10 @@ tlab = tlab(limIdx, :);
 tvec = tvec(limIdx, :);
 
 noHiddenNeurons = 400;
-noEpochs = 70;
-learningRate = 0.025;
+noEpochs = 200;
+learningRate = 0.5;
 learningDrop = 0.004;
-learningDropMaxTimes = 6;
+learningDropMaxTimes = 100;
 
 
 rand()
