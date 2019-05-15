@@ -27,8 +27,8 @@
 
 
 [tvec tlab tstv tstl] = readSets();
-limSize = rows(tvec);
-%limSize = 1000;
+%limSize = rows(tvec);
+limSize = 1000;
 limIdx = randperm(limSize);
 
 tlab += 1;
@@ -40,6 +40,9 @@ tvec = tvec(limIdx, :);
 noHiddenNeurons = 400;
 noEpochs = 70;
 learningRate = 0.025;
+learningDrop = 0.004;
+learningDropMaxTimes = 6;
+
 
 rand()
 rndstate = rand("state");
@@ -51,6 +54,8 @@ rand("state", rndstate);
 trainError = zeros(1, noEpochs);
 testError = zeros(1, noEpochs);
 trReport = [];
+learningDropTimes = 0;
+prevError = 1;
 for epoch=1:noEpochs
 	tic();
 	[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, learningRate);
@@ -66,8 +71,20 @@ for epoch=1:noEpochs
 	epochTime = toc();
 	disp([epoch epochTime trainError(epoch) testError(epoch)])
 	trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
+
+	if (testError(epoch) >= prevError)
+        if(learningDropTimes < learningDropMaxTimes)
+            learningRate -= learningDrop;
+            disp("learningRate dropped to")
+            learningRate
+        end
+	    learningDropTimes += 1;
+	end
+
+    prevError = testError(epoch);
 	fflush(stdout);
 end
+learningDropTimes
 
 
 % to beat:
