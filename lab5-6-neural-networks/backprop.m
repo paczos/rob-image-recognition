@@ -1,4 +1,4 @@
-function [hidlw outlw terr] = backprop(tset, tslb, inihidlw, inioutlw, lr)
+function [hidlw outlw terr] = backprop(tset, tslb, inihidlw, inioutlw, lr, regularizaion)
 % derivative of sigmoid activation function
 % tset - training set (every row represents a sample)
 % tslb - column vector of labels 
@@ -30,17 +30,23 @@ function [hidlw outlw terr] = backprop(tset, tslb, inihidlw, inioutlw, lr)
 
         % http://neuralnetworksanddeeplearning.com/chap2.html
 		% 5. Adjust total error (just to know this value)
-        sampleError = sum((desiredOut-outLayerOut).^2);
+        sampleError = sum((desiredOut-outLayerOut).^2) + regularizaion/(2*rows(tset))*(sum(outlw));
 		terr += sampleError;
 		% 6. Compute delta error of the output layer
 		% how many delta errors should be computed here?
         outLayerDelta = actdf(outLayerOut) .* (desiredOut - outLayerOut);
-        outLayerAdjustment = [hiddenLayerOut 1]' * outLayerDelta * lr;
+        outRegFactor = (1-lr*regularizaion/rows(tset))*outlw;
+        outRegFactor(rows(outRegFactor))=0;
+        outRegFactor=0;
+        outLayerAdjustment = [hiddenLayerOut 1]' * outLayerDelta * lr - outRegFactor;
 
 		% 7. Compute delta error of the hidden layer
 		% how many delta errors should be computed here?
 		hiddenLayerDelta = actdf(hiddenLayerOut) .* (outlw(1:end-1,:)*outLayerDelta')';
-		hiddenLayerAdjustment = [tset(i, :) 1]' * hiddenLayerDelta * lr;
+		hiddenRegFactor =(1-lr*regularizaion/rows(tset))*hidlw;
+		hiddenRegFactor(rows(hiddenRegFactor))=0;
+		hiddenRegFactor=0;
+		hiddenLayerAdjustment = [tset(i, :) 1]' * hiddenLayerDelta * lr - hiddenRegFactor;
 
 		% 8. Update output layer weights
 		outlw += outLayerAdjustment;

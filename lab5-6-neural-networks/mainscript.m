@@ -42,7 +42,7 @@ noEpochs = 200;
 learningRate = 0.5;
 learningDropFrac = 0.1;
 minDropRate = 0.0005;
-
+regularization = 0.001;
 
 rand()
 rndstate = rand("state");
@@ -58,7 +58,7 @@ trReport = [];
 prevError = 1;
 for epoch=1:noEpochs
 	tic();
-	[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, learningRate);
+	[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, learningRate, regularization);
 	clsRes = anncls(tvec, hlnn, olnn);
 	cfmx = confMx(tlab, clsRes);   % it is worth looking into the cfmx in order to know which clothes are incorrectly classified
 	errcf = compErrors(cfmx);
@@ -312,6 +312,11 @@ learningDropTimes
 %    68.000000   157.503690     0.058867     0.113000
 %    69.000000   157.081018     0.058417     0.112500
 %    70.000000   157.600677     0.058100     0.111900
+
+
+% used learning variable rate
+
+
 
 
 % idea: maybe use regularization?
