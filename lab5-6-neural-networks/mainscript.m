@@ -27,7 +27,7 @@
 
 
 [tvec tlab tstv tstl] = readSets();
-limSize = 1000;
+limSize = rows(tvec);
 limIdx = randperm(limSize);
 
 tlab += 1;
