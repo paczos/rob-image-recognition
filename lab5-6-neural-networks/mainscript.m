@@ -25,21 +25,20 @@
 % best so far: 0.114200
 
 
+
 [tvec tlab tstv tstl] = readSets();
-limSize = rows(tvec)
-limIdx = randperm(rows(tvec));
+limSize = 1000;
+limIdx = randperm(limSize);
 
 tlab += 1;
 tstl += 1;
 
 tlab = tlab(limIdx, :);
 tvec = tvec(limIdx, :);
-tstv = tstv(limIdx, :);
-tstl = tstl(limIdx, :);
 
-noHiddenNeurons = 300;
-noEpochs = 50;
-learningRate = 0.01;
+noHiddenNeurons = 400;
+noEpochs = 60;
+learningRate = 0.015;
 
 rand()
 rndstate = rand("state");
@@ -150,3 +149,5 @@ end
 %    58.000000   156.211678     0.074350     0.114400
 %    59.000000   156.574942     0.073817     0.114100
 %    60.000000   156.913653     0.073183     0.114200
+
+% used same params but smaller train set:
