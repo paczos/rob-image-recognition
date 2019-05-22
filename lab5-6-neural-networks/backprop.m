@@ -30,23 +30,21 @@ function [hidlw outlw terr] = backprop(tset, tslb, inihidlw, inioutlw, lr, regul
 
         % http://neuralnetworksanddeeplearning.com/chap2.html
 		% 5. Adjust total error (just to know this value)
-        sampleError = sum((desiredOut-outLayerOut).^2) + regularizaion/(2*rows(tset))*(sum(outlw));
+        sampleError = sum((desiredOut-outLayerOut).^2) ;%+ regularizaion/(2*rows(tset))*(sum(outlw))
 		terr += sampleError;
 		% 6. Compute delta error of the output layer
 		% how many delta errors should be computed here?
         outLayerDelta = actdf(outLayerOut) .* (desiredOut - outLayerOut);
-        outRegFactor = (1-lr*regularizaion/rows(tset))*outlw;
-        outRegFactor(rows(outRegFactor))=0;
-        outRegFactor=0;
-        outLayerAdjustment = [hiddenLayerOut 1]' * outLayerDelta * lr - outRegFactor;
+%        outRegFactor = (1-lr*regularizaion/rows(tset))*outlw;
+%        outRegFactor(rows(outRegFactor))=0;
+        outLayerAdjustment = [hiddenLayerOut 1]' * outLayerDelta * lr;  %- outRegFactor
 
 		% 7. Compute delta error of the hidden layer
 		% how many delta errors should be computed here?
 		hiddenLayerDelta = actdf(hiddenLayerOut) .* (outlw(1:end-1,:)*outLayerDelta')';
-		hiddenRegFactor =(1-lr*regularizaion/rows(tset))*hidlw;
-		hiddenRegFactor(rows(hiddenRegFactor))=0;
-		hiddenRegFactor=0;
-		hiddenLayerAdjustment = [tset(i, :) 1]' * hiddenLayerDelta * lr - hiddenRegFactor;
+%		hiddenRegFactor =(1-lr*regularizaion/rows(tset))*hidlw;
+%		hiddenRegFactor(rows(hiddenRegFactor))=0;
+		hiddenLayerAdjustment = [tset(i, :) 1]' * hiddenLayerDelta * lr ; %- hiddenRegFactor
 
 		% 8. Update output layer weights
 		outlw += outLayerAdjustment;
