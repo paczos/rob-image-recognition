@@ -39,7 +39,7 @@ tvec = tvec(limIdx, :);
 
 noHiddenNeurons = 400;
 noEpochs = 200;
-learningRate = 0.5;
+learningRate = 0.1;
 learningDropFrac = 0.1;
 minDropRate = 0.0005;
 regularization = 0.001;
@@ -89,6 +89,9 @@ learningDropTimes
 % to beat:
 % train: 90.38% 9.62% 0.00%
 % test: 87.42% 12.58% 0.00%
+
+% vanilla implementation + params tweaking:
+% 0.058100     0.111900
 
 %noHiddenNeurons = 200;
 %noEpochs = 50;
