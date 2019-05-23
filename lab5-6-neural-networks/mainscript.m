@@ -37,8 +37,8 @@ tstl += 1;
 tlab = tlab(limIdx, :);
 tvec = tvec(limIdx, :);
 
-tvec = normalize(tvec);
-tstv = normalize(tstv);
+[tvec stds means] = standardize(tvec);
+[tstv _ _ ] = standardize(tstv, stds, means);
 
 noHiddenNeurons = 400;
 noEpochs = 200;
@@ -559,6 +559,9 @@ end
 
 
 % TODO: normalization trick hasnt been evaluated yet
+% it is much worse
 
+
+%standardization
 
 % idea: maybe use regularization?
