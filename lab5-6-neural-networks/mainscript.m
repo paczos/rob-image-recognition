@@ -1,10 +1,3 @@
-% use PCA to reduce dimensionality
-% other method: use PCA and use all dimensions -> decorrelate data
-
-% best so far: 0.114200
-
-
-
 [tvec tlab tstv tstl] = readSets();
 limSize = rows(tvec);
 %limSize = 1000;
@@ -608,7 +601,3 @@ end
 %learningRate =  0.028243
 %    32.000000   149.753351     0.028933     0.111900
 %    33.000000   149.212482     0.028633     0.111300
-
-
-
-% idea: maybe use regularization?
