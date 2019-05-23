@@ -20,7 +20,7 @@ tvec = tvec(limIdx, :);
 [tstv _ _ ] = standardize(tstv, stds, means);
 
 noHiddenNeurons = 250;
-noEpochs = 200;
+noEpochs = 50;
 learningRate = 0.1;
 learningDropFrac = 0.3;
 minDropRate = 0.0005;
