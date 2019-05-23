@@ -75,7 +75,7 @@ for epoch=1:noEpochs
 	disp([epoch epochTime trainError(epoch) testError(epoch)])
 	trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
 
-	if (trainError(epoch) >= prevError)
+	if (testError(epoch) >= prevError)
         if(minDropRate < learningRate)
             learningRate *= (1-learningDropFrac);
             disp("learningRate dropped to")
@@ -83,7 +83,7 @@ for epoch=1:noEpochs
         end
 	end
 
-    prevError = trainError(epoch);
+    prevError = testError(epoch);
 	fflush(stdout);
 end
 
