@@ -24,10 +24,9 @@ noEpochs = 50;
 learningRate = 0.1;
 learningDropFrac = 0.3;
 minDropRate = 0.0005;
-regularization = 0.001;
 
 rand()
-rndstate = rand("state");
+%rndstate = rand("state");
 % save rndstate.txt rndstate
 load rndstate.txt
 rand("state", rndstate);
