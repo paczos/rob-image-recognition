@@ -42,7 +42,7 @@ for epoch=1:noEpochs
 	tic();
 	[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, learningRate, regularization);
 	clsRes = anncls(tvec, hlnn, olnn);
-	cfmx = confMx(tlab, clsRes);   % it is worth looking into the cfmx in order to know which clothes are incorrectly classified
+	cfmx = confMx(tlab, clsRes)   % it is worth looking into the cfmx in order to know which clothes are incorrectly classified
 	errcf = compErrors(cfmx);
 	trainError(epoch) = errcf(2);
 
