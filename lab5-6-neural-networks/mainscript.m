@@ -1,26 +1,5 @@
-% this small NN for tiny data should be 100% correct
-
-% now you can (probably) play with ann_training
-
-% use PCA to reduce dimensionality  
+% use PCA to reduce dimensionality
 % other method: use PCA and use all dimensions -> decorrelate data
-
-% results must be better than the reference, 
-% the logic of classification function could be different, now a simple max is used
-% 
-% passing: basic backpropagation for a network, calc derivative, 
-% 
-% fastest path may not be the best in this case, more than one element
-% this ds has never been used before, free to suggest new methods
-% 
-% when to stop trainig? maybe we should wait longer?
-%
-% seeded random -> in project files there should be serialized state of generator -> repeatability
-% 
-% 
-% 
-%
-
 
 % best so far: 0.114200
 
@@ -40,10 +19,10 @@ tvec = tvec(limIdx, :);
 [tvec stds means] = standardize(tvec);
 [tstv _ _ ] = standardize(tstv, stds, means);
 
-noHiddenNeurons = 400;
+noHiddenNeurons = 250;
 noEpochs = 200;
 learningRate = 0.1;
-learningDropFrac = 0.1;
+learningDropFrac = 0.3;
 minDropRate = 0.0005;
 regularization = 0.001;
 
@@ -558,10 +537,79 @@ end
 %   200.000000   148.915375     0.027133     0.108700
 
 
-% TODO: normalization trick hasnt been evaluated yet
-% it is much worse
+% normalization  is much worse
+
+%standardization -- best so far
+%noHiddenNeurons = 400;
+%noEpochs = 200;
+%learningRate = 0.1;
+%learningDropFrac = 0.1;
+%minDropRate = 0.0005;
+%regularization = 0.001;
+%octave:5>  mainscript
+%cnt =  60000
+%nel =  60000
+%cnt =  10000
+%nel =  10000
+%ans =  0.36702
+%     1.00000   148.78841     0.14540     0.16040
+%     2.00000   149.43246     0.12645     0.14960
+%     3.00000   149.41660     0.11792     0.14200
+%     4.00000   149.46169     0.10547     0.13530
+%     5.00000   149.51550     0.10328     0.13320
+%     6.000000   149.432459     0.099350     0.132900
+%     7.000000   149.656526     0.096400     0.132400
+%     8.000000   150.103991     0.084900     0.125000
+%     9.000000   150.183665     0.085600     0.129200
+%learningRate dropped to
+%learningRate =  0.090000
+%    10.000000   149.274909     0.079350     0.124600
+%    11.000000   149.610447     0.074600     0.121100
+%    12.000000   149.827811     0.070300     0.124000
+%learningRate dropped to
+%learningRate =  0.081000
+%    13.000000   149.601768     0.071517     0.125600
+%learningRate dropped to
+%learningRate =  0.072900
+%    14.000000   149.501424     0.060033     0.116500
+%    15.000000   149.561298     0.058733     0.117000
+%learningRate dropped to
+%learningRate =  0.065610
+%    16.000000   149.092809     0.054617     0.115400
+%    17.000000   149.689442     0.051250     0.115700
+%learningRate dropped to
+%learningRate =  0.059049
+%    18.000000   148.868555     0.048783     0.115200
+%    19.000000   149.753608     0.046633     0.115700
+%learningRate dropped to
+%learningRate =  0.053144
+%    20.000000   149.607660     0.044367     0.115200
+%    21.000000   149.713984     0.043283     0.114900
+%    22.000000   149.327882     0.040950     0.112500
+%    23.000000   150.466976     0.040500     0.112800
+%learningRate dropped to
+%learningRate =  0.047830
+%    24.000000   149.584308     0.038367     0.113000
+%learningRate dropped to
+%learningRate =  0.043047
+%    25.000000   150.260505     0.037550     0.114300
+%learningRate dropped to
+%learningRate =  0.038742
+%    26.000000   149.532959     0.035600     0.112900
+%    27.000000   149.339294     0.033433     0.113600
+%learningRate dropped to
+%learningRate =  0.034868
+%    28.000000   149.530034     0.032250     0.113900
+%learningRate dropped to
+%learningRate =  0.031381
+%    29.000000   149.091698     0.031267     0.112500
+%    30.000000   149.913001     0.030383     0.111800
+%    31.000000   149.733433     0.029817     0.112000
+%learningRate dropped to
+%learningRate =  0.028243
+%    32.000000   149.753351     0.028933     0.111900
+%    33.000000   149.212482     0.028633     0.111300
 
 
-%standardization
 
 % idea: maybe use regularization?
