@@ -12,10 +12,10 @@ tvec = tvec(limIdx, :);
 [tvec stds means] = standardize(tvec);
 [tstv _ _ ] = standardize(tstv, stds, means);
 
-noHiddenNeurons = 250;
-noEpochs = 50;
-learningRate = 0.1;
-learningDropFrac = 0.3;
+noHiddenNeurons = 400;
+noEpochs = 70;
+learningRate = 0.025;
+learningDropFrac = 0;
 minDropRate = 0.0005;
 
 rand()
