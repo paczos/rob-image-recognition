@@ -54,6 +54,23 @@ Zbiór treningowy
 |---|---|
 |89.13%|10.87%|
 
+```
+cfmx =
+
+   5841      3     41     31     10      2     57      0     15      0      0
+      5   5952      4     29      3      1      2      0      4      0      0
+     34      2   5752     44    109      1     50      0      8      0      0
+     18      3     16   5902     24      0     32      0      5      0      0
+     15      5     70     52   5806      0     48      0      4      0      0
+      1      3      1      1      0   5967      2     18      6      1      0
+     70      9     81     73     53      1   5689      1     22      1      0
+      0      0      0      0      0     14      1   5953      7     25      0
+     13      2     13     10      7      3     11      3   5937      1      0
+      0      0      0      1      0      3      0     54      1   5941      0
+
+    47.000000   149.540719     0.021000     0.106900
+```
+
 Warto zwrócić uwage na zbytnie dopasowanie sieci do danych. Chociaż jest to wynik spełniający oczekiwania, to podjęto dalsze poszukiwania rozwiazania, które nie dopasowywałoby się tak bardzo do danych treningowych lub pozwalaloby osiągać zbliżone wyniki szybciej.
 
 ### Normalizacja danych
