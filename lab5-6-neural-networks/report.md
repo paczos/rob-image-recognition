@@ -1,4 +1,5 @@
-# ROB lab 5, 6 Rozpoznawanie odzieży z wykorzystaniem sieci neuronowych Paweł Paczuski (271082)
+# ROB lab 5, 6 Rozpoznawanie odzieży z wykorzystaniem sieci neuronowych 
+Paweł Paczuski (271082)
 
 ## Rozpoznawanie odzieży z wykorzystaniem sieci neuronowych
 Zadanie polegało na implementacji sieci neuronowej w celu klasyfikacji odzieży. Zbiórem danych był fashion-MNIST zawierający 10 rodzajów odzieży w identycznym formacie jak zbiór MNIST z cyframi.
