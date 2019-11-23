@@ -5,5 +5,5 @@ Projekty:
 1. [x] Klasyfikacja Bayesa (rozpoznawanie maści kart)
 1. [x] Klasyfikatory liniowe (rozpoznawanie cyfr) 	
 1. [x] Sieci neuronowe
-1. [ ] Poprawa jakości klasyfikacji
+1. [x] Poprawa jakości klasyfikacji
  
